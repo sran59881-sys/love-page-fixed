@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>致小荣包 💌</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200;300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+
+:root{
+  --cream:#FFF9F2;
+  --ivory:#FDF5E8;
+  --champagne:#F0E0C8;
+  --rose-gold:#C8956E;
+  --dusty-rose:#C2A0A0;
+  --mauve:#A07878;
+  --wine:#7B3F4A;
+  --deep-wine:#5C2D3E;
+  --burgundy:#4A1E2E;
+  --warm-black:#2A1520;
+  --gold-accent:#D4A574;
+  --soft-amber:#E8C9A0;
+}
+
+body{
+  font-family:'Noto Serif SC','Georgia',serif;
+  background:var(--cream);
+  color:var(--wine);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+
+/* ===== 花瓣画布 ===== */
+#petals-canvas{
+  position:fixed;top:0;left:0;
+  width:100%;height:100%;
+  pointer-events:none;z-index:9999;
+}
+
+/* ===== 光晕 ===== */
+#cursor-glow{
+  position:fixed;width:280px;height:280px;border-radius:50%;
+  background:radial-gradient(circle,rgba(196,149,110,0.1) 0%,transparent 70%);
+  pointer-events:none;z-index:0;
+  transform:translate(-50%,-50%);
+  transition:opacity 0.4s;opacity:0;
+}
+body:hover #cursor-glow{opacity:1;}
+
+/* ===== 音乐按钮 ===== */
+#music-btn{
+  position:fixed;bottom:28px;right:28px;z-index:1000;
+  width:auto;height:36px;border-radius:50px;
+  border:1px solid rgba(196,149,110,0.25);
+  background:rgba(255,249,242,0.9);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  box-shadow:0 4px 24px rgba(92,45,62,0.08);
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  gap:6px;padding:0 14px;
+  transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
+  color:var(--rose-gold);
+  font-family:'Noto Serif SC',serif;
+  font-size:0.7rem;letter-spacing:1px;font-weight:300;
+}
+#music-btn:hover{transform:scale(1.04);box-shadow:0 6px 30px rgba(196,149,110,0.2);}
+#music-btn.playing{animation:musicPulse 2.5s ease-in-out infinite;}
+#music-btn .btn-icon{width:16px;height:16px;flex-shrink:0;}
+@keyframes musicPulse{
+  0%,100%{box-shadow:0 4px 24px rgba(92,45,62,0.08);}
+  50%{box-shadow:0 4px 36px rgba(196,149,110,0.25),0 0 50px rgba(196,149,110,0.08);}
+}
+
+/* ===== 通用卡片 ===== */
+.glass-card{
+  background:rgba(255,252,248,0.75);
+  backdrop-filter:blur(28px);
+  -webkit-backdrop-filter:blur(28px);
+  border-radius:24px;
+  border:1px solid rgba(240,224,200,0.5);
+  box-shadow:0 12px 48px rgba(92,45,62,0.04),0 2px 12px rgba(196,149,110,0.06),inset 0 1px 0 rgba(255,255,255,0.9);
+  overflow:hidden;position:relative;
+}
+.glass-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(212,165,116,0.3),transparent);
+}
+
+/* ===== 标题 ===== */
+.section-title{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-size:clamp(1.8rem,5vw,2.8rem);
+  color:var(--deep-wine);
+  text-align:center;margin-bottom:2.5rem;
+  letter-spacing:3px;font-weight:400;
+}
+.section-title em{font-style:italic;color:var(--rose-gold);}
+
+/* ===== 第一屏：封面 ===== */
+.hero{
+  min-height:100dvh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:2rem 1.5rem;
+  position:relative;
+  background:
+    radial-gradient(ellipse at 50% 20%,rgba(240,224,200,0.35) 0%,transparent 55%),
+    radial-gradient(ellipse at 20% 80%,rgba(194,160,160,0.08) 0%,transparent 40%),
+    radial-gradient(ellipse at 80% 60%,rgba(196,149,110,0.06) 0%,transparent 35%);
+}
+.hero-verse{
+  font-family:'Playfair Display',serif;
+  font-size:0.85rem;color:var(--mauve);
+  letter-spacing:5px;margin-bottom:2.5rem;
+  opacity:0;animation:fadeInDown 2s ease-out 0.5s forwards;
+  font-weight:300;font-style:italic;
+  text-transform:uppercase;
+}
+.hero-name{
+  font-family:'Noto Serif SC',serif;
+  font-size:clamp(3.2rem,12vw,7rem);
+  color:var(--deep-wine);
+  line-height:1.1;margin-bottom:1rem;
+  letter-spacing:12px;
+  opacity:0;font-weight:200;
+}
+.hero-name.visible{animation:nameReveal 1.6s cubic-bezier(0.22,1,0.36,1) forwards;}
+@keyframes nameReveal{
+  from{opacity:0;transform:translateY(30px) scale(0.95);letter-spacing:24px;}
+  to{opacity:1;transform:translateY(0) scale(1);letter-spacing:12px;}
+}
+.hero-divider{
+  display:flex;align-items:center;gap:16px;
+  margin:1.5rem 0;opacity:0;animation:fadeIn 1.2s ease-out 2s forwards;
+}
+.hero-divider-line{
+  width:48px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--rose-gold));
+}
+.hero-divider-line:last-child{
+  background:linear-gradient(90deg,var(--rose-gold),transparent);
+}
+.hero-divider svg{
+  width:18px;height:16px;color:var(--wine);opacity:0.7;
+  animation:heartbeat 1.4s ease-in-out infinite;
+  filter:drop-shadow(0 2px 6px rgba(123,63,74,0.12));
+}
+.hero-sub{
+  font-size:0.95rem;color:var(--dusty-rose);
+  letter-spacing:6px;margin-top:0.5rem;
+  opacity:0;animation:fadeInUp 1.5s ease-out 1.8s forwards;
+  font-weight:300;
+}
+.hero-hint{
+  color:var(--mauve);font-size:0.8rem;
+  letter-spacing:3px;margin-top:3rem;
+  opacity:0;animation:fadeIn 1s ease-out 3s forwards;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+}
+.hero-hint .scroll-arrow{
+  display:flex;flex-direction:column;align-items:center;
+  color:var(--rose-gold);
+}
+.hero-hint .scroll-arrow svg{width:20px;height:20px;animation:bounce 2.5s ease-in-out infinite;}
+
+@keyframes fadeInDown{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes heartbeat{
+  0%,100%{transform:scale(1);}
+  15%{transform:scale(1.3);}
+  30%{transform:scale(1);}
+  45%{transform:scale(1.18);}
+}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(8px);}}
+
+/* ===== 第二屏：情书 ===== */
+.letter-section{
+  min-height:100dvh;display:flex;
+  align-items:center;justify-content:center;
+  padding:4rem 1.5rem;
+}
+.letter-card{
+  max-width:680px;width:100%;
+  padding:clamp(2rem,5vw,3.5rem);
+}
+.letter-ornament{
+  text-align:center;color:var(--rose-gold);
+  font-size:0.8rem;letter-spacing:8px;
+  margin:0.5rem 0;opacity:0.6;
+}
+.letter-salutation{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-size:1.6rem;color:var(--deep-wine);
+  margin-bottom:1.5rem;font-weight:400;
+  letter-spacing:2px;
+}
+.letter-body{font-size:1rem;line-height:2.5;color:var(--wine);}
+.letter-body .type-line{
+  display:block;margin-bottom:0.8rem;
+  opacity:0;transform:translateY(10px);
+  transition:all 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+.letter-body .type-line.visible{opacity:1;transform:translateY(0);}
+.letter-body .quote{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-size:1.05rem;color:var(--wine);
+  text-align:center;margin:1.5rem 0;
+  line-height:2.4;letter-spacing:1px;
+  font-style:italic;font-weight:300;
+  border-top:1px solid rgba(196,149,110,0.2);
+  border-bottom:1px solid rgba(196,149,110,0.2);
+  padding:1rem 0;
+}
+.letter-body .quote-left{
+  font-size:0.98rem;color:var(--mauve);
+  text-align:left;margin:1.2rem 0 1.2rem 0.5rem;
+  line-height:2.2;letter-spacing:0.5px;
+  border-left:2px solid var(--rose-gold);
+  padding-left:1rem;font-weight:300;
+}
+.letter-signature{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-size:1.3rem;color:var(--deep-wine);
+  text-align:right;margin-top:2rem;
+  opacity:0;transform:translateY(16px);
+  transition:all 0.8s ease-out;font-style:italic;
+}
+.letter-signature.visible{opacity:1;transform:translateY(0);}
+
+/* ===== 第三屏：翻转卡 ===== */
+.poem-section{min-height:100dvh;padding:4rem 1.5rem;}
+.poem-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:1rem;max-width:680px;margin:0 auto;
+}
+@media(min-width:640px){.poem-grid{grid-template-columns:repeat(3,1fr);gap:1.2rem;}}
+
+.poem-flip{perspective:900px;cursor:pointer;height:190px;}
+.poem-flip-inner{
+  position:relative;width:100%;height:100%;
+  transition:transform 0.8s cubic-bezier(0.4,0,0.2,1);
+  transform-style:preserve-3d;
+}
+.poem-flip.flipped .poem-flip-inner{transform:rotateY(180deg);}
+.poem-flip-front,.poem-flip-back{
+  position:absolute;width:100%;height:100%;
+  backface-visibility:hidden;
+  border-radius:20px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:1.2rem;text-align:center;
+}
+.poem-flip-front{
+  background:linear-gradient(145deg,rgba(255,252,248,0.92),rgba(253,245,232,0.92));
+  border:1px solid rgba(212,165,116,0.15);
+  box-shadow:0 4px 20px rgba(92,45,62,0.04);
+}
+.poem-flip-back{
+  background:linear-gradient(145deg,rgba(123,63,74,0.06),rgba(92,45,62,0.08));
+  border:1px solid rgba(196,149,110,0.15);
+  transform:rotateY(180deg);
+}
+.poem-flip-front .poem-text{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-size:0.98rem;color:var(--deep-wine);
+  line-height:1.9;letter-spacing:1px;font-weight:400;
+}
+.poem-flip-back .poem-meaning{
+  font-size:0.85rem;color:var(--wine);
+  line-height:1.8;font-weight:300;
+}
+.poem-flip-back .poem-label{
+  font-size:0.65rem;color:var(--mauve);
+  margin-top:0.6rem;letter-spacing:3px;
+  text-transform:uppercase;
+}
+.poem-hint{
+  text-align:center;color:var(--mauve);
+  font-size:0.78rem;margin-top:1.8rem;
+  letter-spacing:3px;font-weight:300;
+}
+
+/* ===== 第四屏：心动挑战 ===== */
+.heart-game-section{
+  min-height:100dvh;padding:4rem 1.5rem;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+}
+.heart-game-card{
+  max-width:480px;width:100%;
+  padding:2.5rem 2rem;text-align:center;
+}
+.heart-progress-wrap{margin:1.5rem 0 2rem;}
+.heart-progress-bar{
+  width:100%;height:8px;
+  background:rgba(196,149,110,0.1);
+  border-radius:20px;overflow:hidden;
+}
+.heart-progress-fill{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,var(--rose-gold),var(--wine));
+  border-radius:20px;
+  transition:width 0.4s cubic-bezier(0.4,0,0.2,1);
+  box-shadow:0 0 12px rgba(123,63,74,0.15);
+}
+.heart-progress-text{
+  display:flex;justify-content:space-between;
+  font-size:0.7rem;color:var(--mauve);
+  margin-top:0.5rem;letter-spacing:1px;font-weight:300;
+}
+.heart-btn{
+  width:120px;height:120px;border-radius:50%;
+  border:1px solid rgba(196,149,110,0.2);
+  background:linear-gradient(145deg,rgba(255,252,248,0.9),rgba(253,245,232,0.9));
+  box-shadow:0 8px 32px rgba(92,45,62,0.06),inset 0 -2px 8px rgba(196,149,110,0.05);
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto;
+  transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+  user-select:none;-webkit-user-select:none;
+  position:relative;
+}
+.heart-btn:hover{
+  transform:scale(1.1);
+  box-shadow:0 12px 44px rgba(123,63,74,0.12),0 0 0 8px rgba(123,63,74,0.03);
+}
+.heart-btn:active{transform:scale(0.92);}
+.heart-btn.pop{animation:heartPop 0.5s cubic-bezier(0.4,0,0.2,1);}
+@keyframes heartPop{0%{transform:scale(1);}30%{transform:scale(1.35);}60%{transform:scale(0.95);}100%{transform:scale(1);}}
+.heart-btn .heart-svg{width:48px;height:44px;transition:transform 0.2s;}
+.heart-count{
+  font-family:'Playfair Display',serif;
+  font-size:1.8rem;color:var(--deep-wine);
+  margin-top:1rem;font-weight:400;
+}
+.heart-count-label{font-size:0.75rem;color:var(--mauve);letter-spacing:3px;font-weight:300;}
+
+/* ===== 心动粒子特效 ===== */
+#heart-particles{
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  pointer-events:none;z-index:9997;
+}
+.heart-particle{
+  position:absolute;pointer-events:none;
+  animation:heartParticleFly var(--dur) cubic-bezier(0.25,0.46,0.45,0.94) forwards;
+}
+@keyframes heartParticleFly{
+  0%{opacity:0;transform:translate(0,0) scale(0.3) rotate(0deg);}
+  15%{opacity:1;transform:translate(calc(var(--dx)*0.2),calc(var(--dy)*0.2)) scale(1) rotate(calc(var(--rot)*0.3));}
+  80%{opacity:0.8;transform:translate(calc(var(--dx)*0.8),calc(var(--dy)*0.8)) scale(0.9) rotate(var(--rot));}
+  100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(0.2) rotate(var(--rot));}
+}
+
+/* ===== 第五屏：孔明灯 ===== */
+.lantern-section{
+  min-height:100dvh;padding:4rem 1.5rem;
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  background:linear-gradient(180deg,var(--cream) 0%,#F5E8D8 30%,#EDDCBE 60%,#E0CCAA 100%);
+}
+
+/* 夜空星光点 */
+.lantern-section::before{
+  content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+  background-image:
+    radial-gradient(1px 1px at 15% 20%,rgba(196,149,110,0.3),transparent),
+    radial-gradient(1px 1px at 45% 10%,rgba(196,149,110,0.2),transparent),
+    radial-gradient(1px 1px at 75% 25%,rgba(196,149,110,0.25),transparent),
+    radial-gradient(1px 1px at 25% 40%,rgba(196,149,110,0.15),transparent),
+    radial-gradient(1px 1px at 60% 35%,rgba(196,149,110,0.2),transparent),
+    radial-gradient(1px 1px at 85% 15%,rgba(196,149,110,0.18),transparent),
+    radial-gradient(1px 1px at 10% 55%,rgba(196,149,110,0.12),transparent),
+    radial-gradient(1px 1px at 90% 45%,rgba(196,149,110,0.15),transparent);
+  pointer-events:none;z-index:0;
+}
+
+.lantern-sky{
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  pointer-events:none;z-index:1;
+}
+
+/* 精致孔明灯 SVG 样式 */
+.lantern-el{
+  position:absolute;z-index:2;
+  pointer-events:none;
+  filter:drop-shadow(0 0 14px rgba(232,170,80,0.4)) drop-shadow(0 0 30px rgba(255,200,100,0.15));
+  animation:lanternFloat var(--dur) cubic-bezier(0.25,0.1,0.25,1) forwards;
+}
+@keyframes lanternFloat{
+  0%{opacity:0;transform:translateY(0) scale(0.4) rotate(0deg);}
+  6%{opacity:1;transform:translateY(-5vh) scale(1) rotate(calc(var(--sway1)*0.3));}
+  25%{transform:translateY(-30vh) scale(1) rotate(var(--sway1));}
+  50%{opacity:0.9;transform:translateY(-60vh) scale(0.9) rotate(var(--sway2));}
+  75%{opacity:0.5;transform:translateY(-90vh) scale(0.75) rotate(var(--sway3));}
+  100%{opacity:0;transform:translateY(-130vh) scale(0.5) rotate(var(--sway3));}
+}
+
+.lantern-wish{
+  position:fixed;
+  background:rgba(255,252,248,0.92);backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  padding:8px 18px;border-radius:24px;
+  font-size:0.78rem;color:var(--wine);
+  white-space:nowrap;font-weight:300;
+  border:1px solid rgba(196,149,110,0.15);
+  box-shadow:0 4px 20px rgba(92,45,62,0.06);
+  opacity:0;animation:showWish 0.7s cubic-bezier(0.4,0,0.2,1) 0.2s forwards;
+  pointer-events:none;z-index:3;
+}
+@keyframes showWish{from{opacity:0;transform:translateX(-50%) translateY(10px) scale(0.9);}to{opacity:1;transform:translateX(-50%) translateY(0) scale(1);}}
+
+.lantern-tap-area{
+  width:160px;height:160px;border-radius:50%;
+  border:1.5px dashed rgba(196,149,110,0.25);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  margin:2rem auto;cursor:pointer;
+  transition:all 0.4s;position:relative;z-index:2;
+  background:rgba(255,252,248,0.35);
+}
+.lantern-tap-area:hover{
+  border-color:rgba(196,149,110,0.45);
+  background:rgba(255,252,248,0.55);
+  transform:scale(1.04);
+}
+.lantern-tap-area .tap-icon svg{width:40px;height:56px;}
+.lantern-tap-area .tap-text{font-size:0.78rem;color:var(--mauve);letter-spacing:3px;font-weight:300;margin-top:0.6rem;}
+
+/* ===== 第六屏：结尾 ===== */
+.ending-section{
+  min-height:100dvh;padding:4rem 1.5rem;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;position:relative;
+  background:radial-gradient(ellipse at 50% 50%,rgba(240,224,200,0.2) 0%,transparent 60%);
+}
+.ending-heart-rain{
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  pointer-events:none;overflow:hidden;z-index:1;
+}
+.rain-heart{
+  position:absolute;top:-40px;
+  animation:rainFall var(--dur) linear forwards;
+  opacity:0;
+}
+.rain-heart svg{filter:drop-shadow(0 2px 6px rgba(123,63,74,0.1));}
+@keyframes rainFall{
+  0%{opacity:0;transform:translateY(0) rotate(0deg) scale(0.7);}
+  5%{opacity:0.7;}
+  95%{opacity:0.7;}
+  100%{opacity:0;transform:translateY(100vh) rotate(var(--rot)) scale(1);}
+}
+
+.ending-content{position:relative;z-index:2;}
+.ending-title{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-size:clamp(2rem,7vw,3.8rem);
+  color:var(--deep-wine);
+  margin-bottom:1.5rem;font-weight:200;
+  letter-spacing:4px;
+  opacity:0;transform:translateY(20px);
+  transition:all 1.2s ease-out;
+}
+.ending-title.visible{opacity:1;transform:translateY(0);}
+.ending-poem{
+  font-family:'Playfair Display','Noto Serif SC',serif;
+  font-size:1.05rem;color:var(--mauve);
+  line-height:2.4;letter-spacing:1px;
+  margin-bottom:2rem;font-style:italic;font-weight:300;
+  opacity:0;transform:translateY(16px);
+  transition:all 1s ease-out 0.3s;
+}
+.ending-poem.visible{opacity:1;transform:translateY(0);}
+.ending-message{
+  font-size:0.95rem;color:var(--wine);
+  line-height:2.4;max-width:400px;font-weight:300;
+  opacity:0;transform:translateY(16px);
+  transition:all 1s ease-out 0.6s;
+}
+.ending-message.visible{opacity:1;transform:translateY(0);}
+.ending-cta{
+  margin-top:2.5rem;
+  opacity:0;transform:translateY(16px);
+  transition:all 1s ease-out 0.9s;
+}
+.ending-cta.visible{opacity:1;transform:translateY(0);}
+.ending-cta button{
+  background:linear-gradient(135deg,var(--wine),var(--deep-wine));
+  border:none;border-radius:50px;
+  padding:14px 48px;
+  color:var(--cream);font-size:0.95rem;
+  font-family:'Noto Serif SC',serif;
+  letter-spacing:4px;font-weight:300;
+  box-shadow:0 8px 32px rgba(92,45,62,0.2);
+  cursor:pointer;transition:all 0.4s;
+}
+.ending-cta button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 40px rgba(92,45,62,0.3);
+}
+.ending-cta button:active{transform:translateY(0) scale(0.97);}
+
+/* ===== 浮动爱心 ===== */
+.float-heart{
+  position:fixed;pointer-events:none;z-index:2;
+  animation:floatHeart var(--dur) ease-in forwards;
+}
+@keyframes floatHeart{
+  0%{opacity:0;transform:translateY(0) scale(0.5) rotate(0deg);}
+  10%{opacity:var(--op);}
+  90%{opacity:var(--op);}
+  100%{opacity:0;transform:translateY(-100vh) scale(1) rotate(var(--rot));}
+}
+
+/* ===== 全屏特效 ===== */
+#overlay-burst{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:9998;}
+.burst-particle{
+  position:absolute;
+  animation:burstFly 1.5s ease-out forwards;
+}
+.burst-particle svg{filter:drop-shadow(0 2px 8px rgba(123,63,74,0.15));}
+@keyframes burstFly{
+  0%{opacity:1;transform:translate(0,0) scale(1);}
+  100%{opacity:0;transform:translate(var(--bx),var(--by)) scale(0) rotate(var(--rot));}
+}
+
+/* ===== 滚动显示 ===== */
+.reveal{opacity:0;transform:translateY(30px);transition:all 0.9s cubic-bezier(0.4,0,0.2,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ===== 响应式 ===== */
+@media(max-width:480px){
+  .poem-grid{grid-template-columns:1fr 1fr;gap:0.8rem;}
+  .poem-flip{height:170px;}
+  .letter-body{font-size:0.92rem;line-height:2.3;}
+  .heart-btn{width:100px;height:100px;}
+  .heart-btn .heart-svg{width:40px;height:36px;}
+  .lantern-tap-area{width:140px;height:140px;}
+  .hero-name{letter-spacing:8px;}
+}
+</style>
+<script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
+<script>
+(function(){
+  try{
+    var beacon=new BeaconAction({
+      appkey:'0WEB06U85YBSLJNL',
+      versionCode:'1.0.0',
+      channelID:'share',
+      delay:1000,
+      sessionDuration:30*60*1000,
+      isOversea:false,
+      needReportRqdEvent:false
+    });
+    beacon.onDirectUserAction('preview_page_view',{
+      'url':location.href,
+      'referrer':document.referrer,
+      'title':document.title,
+      'sandbox_id':'a1b79d654e1f40ebae56cb3c68299fd5'
+    });
+  }catch(e){}
+})();
+</script></head>
+<body>
+
+<!-- 光晕 -->
+<div id="cursor-glow"></div>
+
+<!-- 花瓣画布 -->
+<canvas id="petals-canvas"></canvas>
+
+<!-- 音乐按钮：初始显示"音乐 开"，播放中显示"音乐 🔇" -->
+<button id="music-btn" onclick="toggleMusic()">
+  <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+  <span>静音</span>
+</button>
+
+<!-- 特效层 -->
+<div id="overlay-burst"></div>
+<div id="heart-particles"></div>
+
+<!-- ===== 第一屏：封面 ===== -->
+<section class="hero page" id="hero">
+  <p class="hero-verse">The universe conspired to bring me to you</p>
+  <h1 class="hero-name" id="hero-name">小 荣 包</h1>
+  <div class="hero-divider">
+    <div class="hero-divider-line"></div>
+    <svg viewBox="0 0 32 30"><path d="M16 28S3 18 3 10a6.5 6.5 0 0112-3.5A6.5 6.5 0 0127 10c0 8-11 18-11 18z" fill="currentColor" opacity="0.7"/></svg>
+    <div class="hero-divider-line"></div>
+  </div>
+  <p class="hero-sub">你是所有温柔的总和</p>
+  <p class="hero-hint">
+    往下滑，我想说一些话给你听
+    <span class="scroll-arrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </span>
+  </p>
+</section>
+
+<!-- ===== 第二屏：情书 ===== -->
+<section class="letter-section page" id="letter">
+  <div class="letter-card glass-card">
+    <div class="letter-ornament">✦ ✦ ✦</div>
+    <div class="letter-salutation">Dear 小荣包：</div>
+    <div class="letter-body" id="letter-body">
+
+      <span class="type-line" data-delay="0">我在想一个问题——</span>
+      <span class="type-line" data-delay="400">如果宇宙的年龄是138亿年，</span>
+      <span class="type-line" data-delay="700">如果银河系有两千亿颗恒星，</span>
+      <span class="type-line" data-delay="1000">如果地球上曾经存在过一千亿个人，</span>
+      <span class="type-line" data-delay="1300">那我遇见你的概率，</span>
+      <span class="type-line" data-delay="1600">大概是一个穷尽了数学也无法计算的奇迹。</span>
+      <span class="type-line" data-delay="1900">可它偏偏发生了。</span>
+
+      <span class="quote" data-delay="2200">"宇宙花了138亿年制造了这场相遇，<br>而我只花了一秒就认出了你。"</span>
+
+      <span class="type-line" data-delay="2600">有人说，存在先于本质——</span>
+      <span class="type-line" data-delay="2900">我们被抛入这个世界，本没有意义。</span>
+      <span class="type-line" data-delay="3200">可遇见你之后，我忽然觉得，</span>
+      <span class="type-line" data-delay="3500">也许存在的全部意义，</span>
+      <span class="type-line" data-delay="3800">就是为了走到你面前。</span>
+
+      <span class="type-line" data-delay="4100">萨特说人是被判定为自由的。</span>
+      <span class="type-line" data-delay="4400">可他没说自由也可以是一种选择——</span>
+      <span class="type-line" data-delay="4700">我选择被你牵绊，</span>
+      <span class="type-line" data-delay="5000">就像星辰选择围绕恒星运转，</span>
+      <span class="type-line" data-delay="5300">不是因为引力，而是因为光芒。</span>
+
+      <span class="quote-left" data-delay="5600">"浪漫不是一种情绪，而是一种信仰。<br>是明知世界荒诞，仍然选择温柔相待。<br>是明知一切终将消逝，仍然选择全力以赴。"</span>
+
+      <span class="type-line" data-delay="6000">你问我有多爱你？</span>
+      <span class="type-line" data-delay="6300">大概就是——如果世界明天就要毁灭，</span>
+      <span class="type-line" data-delay="6600">我最后的念头不会是恐惧，</span>
+      <span class="type-line" data-delay="6900">而是"还好，我在最后一刻还在你身边"。</span>
+
+      <span class="type-line" data-delay="7200">我爱你这件事，</span>
+      <span class="type-line" data-delay="7500">不是荷尔蒙三个月的保质期，</span>
+      <span class="type-line" data-delay="7800">是一个灵魂对另一个灵魂说：</span>
+      <span class="type-line" data-delay="8100">"我认出了你，我不会放手。"</span>
+
+      <span class="quote" data-delay="8500">"加缪说，在隆冬，我终于知道，<br>我身上有一个不可战胜的夏天。<br>小荣包，你就是我的夏天。"</span>
+
+      <span class="type-line" data-delay="8900">我想和你一起浪费时间——</span>
+      <span class="type-line" data-delay="9200">浪费时间看每一场日落，</span>
+      <span class="type-line" data-delay="9500">浪费时间听雨打在窗上，</span>
+      <span class="type-line" data-delay="9800">浪费时间在深夜聊一些没有答案的问题，</span>
+      <span class="type-line" data-delay="10100">浪费到头发白了还在浪费时间。</span>
+      <span class="type-line" data-delay="10400">因为和你在一起，</span>
+      <span class="type-line" data-delay="10700">时间就不叫浪费，叫活着。</span>
+
+      <span class="type-line" data-delay="11000">小荣包，我不是完人。</span>
+      <span class="type-line" data-delay="11300">我会忘记纪念日，会在吵架时沉默，</span>
+      <span class="type-line" data-delay="11600">会在你委屈的时候笨拙地不知道怎么开口。</span>
+      <span class="type-line" data-delay="11900">但我可以向你保证——</span>
+      <span class="type-line" data-delay="12200">我会一直在。</span>
+      <span class="type-line" data-delay="12500">不是承诺，是选择。</span>
+      <span class="type-line" data-delay="12800">每一天醒来重新选择你，</span>
+      <span class="type-line" data-delay="13100">这就是我能给出的最浪漫的回答。</span>
+
+      <span class="quote-left" data-delay="13500">"爱不是彼此凝视，而是一起望向同一个方向。<br>而你，就是我余生全部的方向。"</span>
+
+      <span class="type-line" data-delay="13900">谢谢你在无数个可能的平行宇宙里，</span>
+      <span class="type-line" data-delay="14200">选择了这一个，走向了我。</span>
+      <span class="type-line" data-delay="14500">往后的日子，让我做你安心的理由。</span>
+    </div>
+    <div class="letter-signature" id="letter-sig">
+      Yours, forever.<br>写于一个想你的深夜
+    </div>
+    <div class="letter-ornament">✦ ✦ ✦</div>
+  </div>
+</section>
+
+<!-- ===== 第三屏：翻转卡 ===== -->
+<section class="poem-section page" id="poems">
+  <h2 class="section-title reveal">Some words <em>only</em> for you</h2>
+  <div class="poem-grid">
+    <div class="poem-flip reveal" onclick="flipCard(this)">
+      <div class="poem-flip-inner">
+        <div class="poem-flip-front"><div class="poem-text">宇宙花了<br>138亿年</div></div>
+        <div class="poem-flip-back"><div class="poem-meaning">才制造出这场相遇。而我，一秒就认出了你。</div><div class="poem-label">— FOR 小荣包</div></div>
+      </div>
+    </div>
+    <div class="poem-flip reveal" onclick="flipCard(this)">
+      <div class="poem-flip-inner">
+        <div class="poem-flip-front"><div class="poem-text">自由是一种<br>选择</div></div>
+        <div class="poem-flip-back"><div class="poem-meaning">我选择被你牵绊。像星辰选择光芒，不是因为引力，而是因为温暖。</div><div class="poem-label">— FOR 小荣包</div></div>
+      </div>
+    </div>
+    <div class="poem-flip reveal" onclick="flipCard(this)">
+      <div class="poem-flip-inner">
+        <div class="poem-flip-front"><div class="poem-text">浪漫至死<br>不是口号</div></div>
+        <div class="poem-flip-back"><div class="poem-meaning">是明知世界荒诞，仍然选择温柔。明知一切终将消逝，仍然全力以赴。</div><div class="poem-label">— FOR 小荣包</div></div>
+      </div>
+    </div>
+    <div class="poem-flip reveal" onclick="flipCard(this)">
+      <div class="poem-flip-inner">
+        <div class="poem-flip-front"><div class="poem-text">和你浪费<br>一辈子</div></div>
+        <div class="poem-flip-back"><div class="poem-meaning">看日落，听雨声，聊没有答案的问题。和你在一起，时间不叫浪费，叫活着。</div><div class="poem-label">— FOR 小荣包</div></div>
+      </div>
+    </div>
+    <div class="poem-flip reveal" onclick="flipCard(this)">
+      <div class="poem-flip-inner">
+        <div class="poem-flip-front"><div class="poem-text">你就是<br>我的夏天</div></div>
+        <div class="poem-flip-back"><div class="poem-meaning">在隆冬，我终于知道我身上有一个不可战胜的夏天。你就是那个夏天。</div><div class="poem-label">— FOR 小荣包</div></div>
+      </div>
+    </div>
+    <div class="poem-flip reveal" onclick="flipCard(this)">
+      <div class="poem-flip-inner">
+        <div class="poem-flip-front"><div class="poem-text">每一天<br>重新选择你</div></div>
+        <div class="poem-flip-back"><div class="poem-meaning">不是承诺，是选择。醒来时的第一个念头，入睡前最后一个念头，都是你。</div><div class="poem-label">— FOR 小荣包</div></div>
+      </div>
+    </div>
+  </div>
+  <p class="poem-hint reveal">✦ 点击卡片，翻阅藏在我心里的话</p>
+</section>
+
+<!-- ===== 第四屏：心动挑战 ===== -->
+<section class="heart-game-section page" id="heartgame">
+  <div class="heart-game-card glass-card">
+    <h2 class="section-title" style="margin-bottom:1rem;">Heartbeat <em>Challenge</em></h2>
+    <p style="color:var(--mauve);font-size:0.88rem;margin-bottom:1.5rem;line-height:1.9;font-weight:300;">
+      每一次心跳，都是为你而跳<br>
+      收集100次心跳，证明我的爱是恒定的
+    </p>
+    <div class="heart-progress-wrap">
+      <div class="heart-progress-bar">
+        <div class="heart-progress-fill" id="heart-fill"></div>
+      </div>
+      <div class="heart-progress-text">
+        <span>0</span>
+        <span id="heart-percent">0%</span>
+        <span>100</span>
+      </div>
+    </div>
+    <button class="heart-btn" id="heart-btn" onclick="collectHeart(event)">
+      <svg class="heart-svg" viewBox="0 0 32 30">
+        <path d="M16 28S3 18 3 10a6.5 6.5 0 0112-3.5A6.5 6.5 0 0127 10c0 8-11 18-11 18z" fill="var(--wine)" opacity="0.8"/>
+      </svg>
+    </button>
+    <div class="heart-count" id="heart-count">0</div>
+    <div class="heart-count-label">次心跳</div>
+    <p id="heart-message" style="margin-top:1.5rem;font-size:0.82rem;color:var(--mauve);min-height:1.5rem;transition:all 0.3s;font-weight:300;"></p>
+  </div>
+</section>
+
+<!-- ===== 第五屏：孔明灯 ===== -->
+<section class="lantern-section page" id="lantern">
+  <div class="lantern-sky" id="lantern-sky"></div>
+  <h2 class="section-title" style="position:relative;z-index:2;">Make a <em>Wish</em></h2>
+  <p style="color:var(--mauve);font-size:0.88rem;text-align:center;margin-bottom:1rem;position:relative;z-index:2;line-height:1.9;font-weight:300;">
+    轻轻点一盏灯，<br>每一盏都载着一个关于你的愿望
+  </p>
+  <div class="lantern-tap-area" id="lantern-tap" onclick="releaseLantern(event)">
+    <span class="tap-icon">
+      <svg viewBox="0 0 40 64" fill="none">
+        <!-- 灯笼顶部提梁 -->
+        <path d="M16 6 Q20 2 24 6" stroke="#C8956E" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <rect x="17" y="5" width="6" height="3" rx="1.5" fill="#D4A574"/>
+        <!-- 灯体 - 优美曲线轮廓 -->
+        <path d="M8 20 Q8 8 20 8 Q32 8 32 20 Q32 36 20 40 Q8 36 8 20Z" fill="url(#tapLanternGrad)"/>
+        <!-- 灯体金色边框 -->
+        <path d="M8 20 Q8 8 20 8 Q32 8 32 20 Q32 36 20 40 Q8 36 8 20Z" stroke="rgba(212,165,116,0.35)" stroke-width="0.8" fill="none"/>
+        <!-- 灯体装饰横线 -->
+        <path d="M9 16 Q20 14 31 16" stroke="rgba(255,220,150,0.45)" stroke-width="0.5" fill="none"/>
+        <path d="M8.5 22 Q20 20 31.5 22" stroke="rgba(255,220,150,0.3)" stroke-width="0.5" fill="none"/>
+        <path d="M9 28 Q20 26 31 28" stroke="rgba(255,220,150,0.45)" stroke-width="0.5" fill="none"/>
+        <!-- 灯内火焰光晕 -->
+        <ellipse cx="20" cy="22" rx="6" ry="8" fill="url(#tapFlameGlow)" opacity="0.4"/>
+        <!-- 灯内火焰 -->
+        <ellipse cx="20" cy="20" rx="2.5" ry="4.5" fill="url(#tapFlameGrad)" opacity="0.95">
+          <animate attributeName="ry" values="4.5;5.5;4.5" dur="1.2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.95;1;0.95" dur="0.8s" repeatCount="indefinite"/>
+        </ellipse>
+        <!-- 底部托盘 -->
+        <ellipse cx="20" cy="40" rx="6" ry="1.5" fill="#D4A574" opacity="0.7"/>
+        <!-- 底部穗子 - 更飘逸 -->
+        <path d="M18 41 Q17.5 48 16 54" stroke="#D4A574" stroke-width="0.8" fill="none" stroke-linecap="round">
+          <animate attributeName="d" values="M18 41 Q17.5 48 16 54;M18 41 Q18.5 48 17 54;M18 41 Q17.5 48 16 54" dur="3s" repeatCount="indefinite"/>
+        </path>
+        <path d="M20 41 Q20 49 20 56" stroke="#C8956E" stroke-width="1" fill="none" stroke-linecap="round">
+          <animate attributeName="d" values="M20 41 Q20 49 20 56;M20 41 Q19.5 49 19.5 56;M20 41 Q20 49 20 56" dur="2.5s" repeatCount="indefinite"/>
+        </path>
+        <path d="M22 41 Q22.5 48 24 54" stroke="#D4A574" stroke-width="0.8" fill="none" stroke-linecap="round">
+          <animate attributeName="d" values="M22 41 Q22.5 48 24 54;M22 41 Q21.5 48 23 54;M22 41 Q22.5 48 24 54" dur="3.2s" repeatCount="indefinite"/>
+        </path>
+        <!-- 穗头珠子 -->
+        <circle cx="16" cy="54" r="1.2" fill="#C8956E" opacity="0.8"/>
+        <circle cx="20" cy="56" r="1.5" fill="#D4A574"/>
+        <circle cx="24" cy="54" r="1.2" fill="#C8956E" opacity="0.8"/>
+        <defs>
+          <radialGradient id="tapLanternGrad" cx="50%" cy="38%" r="58%">
+            <stop offset="0%" stop-color="#FFF5E0"/>
+            <stop offset="30%" stop-color="#FFE4B5"/>
+            <stop offset="65%" stop-color="#F0B840"/>
+            <stop offset="100%" stop-color="#CC7722"/>
+          </radialGradient>
+          <radialGradient id="tapFlameGrad" cx="50%" cy="30%">
+            <stop offset="0%" stop-color="#FFFDE8"/>
+            <stop offset="40%" stop-color="#FFE066"/>
+            <stop offset="100%" stop-color="rgba(255,165,0,0.2)"/>
+          </radialGradient>
+          <radialGradient id="tapFlameGlow" cx="50%" cy="40%">
+            <stop offset="0%" stop-color="rgba(255,240,200,0.6)"/>
+            <stop offset="100%" stop-color="rgba(255,200,100,0)"/>
+          </radialGradient>
+        </defs>
+      </svg>
+    </span>
+    <span class="tap-text">点 我 放 灯</span>
+  </div>
+  <p id="lantern-count" style="color:var(--mauve);font-size:0.75rem;letter-spacing:3px;position:relative;z-index:2;font-weight:300;">
+    已放飞 0 盏灯
+  </p>
+</section>
+
+<!-- ===== 第六屏：结尾 ===== -->
+<section class="ending-section page" id="ending">
+  <div class="ending-heart-rain" id="rain-container"></div>
+  <div class="ending-content">
+    <h2 class="ending-title reveal">小荣包，我爱你</h2>
+    <div class="ending-poem reveal">
+      "我从未奢望过永恒，<br>
+      因为与你共度的每一秒，<br>
+      本身就是永恒的模样。"
+    </div>
+    <p class="ending-message reveal">
+      我想给你一个家。<br>
+      不是房子，是一种笃定——<br>
+      是你在外面被世界打碎以后，<br>
+      回来有人接住你的那种笃定。<br><br>
+      小荣包，你愿意吗？
+    </p>
+    <div class="ending-cta reveal">
+      <button onclick="finalBurst(event)">我愿意</button>
+    </div>
+  </div>
+</section>
+
+<!-- 浮动爱心容器 -->
+<div id="float-hearts"></div>
+
+<script>
+// ===== SVG爱心工具 =====
+function createHeartSVG(size=16, color='var(--wine)', opacity=0.7) {
+  return `<svg width="${size}" height="${size}" viewBox="0 0 32 30" style="opacity:${opacity}"><path d="M16 28S3 18 3 10a6.5 6.5 0 0112-3.5A6.5 6.5 0 0127 10c0 8-11 18-11 18z" fill="${color}"/></svg>`;
+}
+
+// ===== 精致孔明灯SVG生成 =====
+function createLanternSVG(scale=1) {
+  const s = scale;
+  const uid = lanternUID;
+  return `<svg width="${40*s}" height="${64*s}" viewBox="0 0 40 64" fill="none" style="overflow:visible">
+    <defs>
+      <radialGradient id="lg${uid}" cx="50%" cy="38%" r="58%">
+        <stop offset="0%" stop-color="#FFF5E0"/>
+        <stop offset="30%" stop-color="#FFE4B5"/>
+        <stop offset="65%" stop-color="#F0B840"/>
+        <stop offset="100%" stop-color="#CC7722"/>
+      </radialGradient>
+      <radialGradient id="fg${uid}" cx="50%" cy="30%">
+        <stop offset="0%" stop-color="#FFFDE8"/>
+        <stop offset="40%" stop-color="#FFE066"/>
+        <stop offset="100%" stop-color="rgba(255,165,0,0.2)"/>
+      </radialGradient>
+      <radialGradient id="fgl${uid}" cx="50%" cy="40%">
+        <stop offset="0%" stop-color="rgba(255,240,200,0.6)"/>
+        <stop offset="100%" stop-color="rgba(255,200,100,0)"/>
+      </radialGradient>
+    </defs>
+    <!-- 提梁 -->
+    <path d="M16 6 Q20 2 24 6" stroke="#C8956E" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <rect x="17" y="5" width="6" height="3" rx="1.5" fill="#D4A574"/>
+    <!-- 灯体 -->
+    <path d="M8 20 Q8 8 20 8 Q32 8 32 20 Q32 36 20 40 Q8 36 8 20Z" fill="url(#lg${uid})"/>
+    <path d="M8 20 Q8 8 20 8 Q32 8 32 20 Q32 36 20 40 Q8 36 8 20Z" stroke="rgba(212,165,116,0.35)" stroke-width="0.8" fill="none"/>
+    <!-- 装饰线 -->
+    <path d="M9 16 Q20 14 31 16" stroke="rgba(255,220,150,0.45)" stroke-width="0.5" fill="none"/>
+    <path d="M8.5 22 Q20 20 31.5 22" stroke="rgba(255,220,150,0.3)" stroke-width="0.5" fill="none"/>
+    <path d="M9 28 Q20 26 31 28" stroke="rgba(255,220,150,0.45)" stroke-width="0.5" fill="none"/>
+    <!-- 火焰光晕 -->
+    <ellipse cx="20" cy="22" rx="6" ry="8" fill="url(#fgl${uid})" opacity="0.4"/>
+    <!-- 火焰 -->
+    <ellipse cx="20" cy="20" rx="2.5" ry="4.5" fill="url(#fg${uid})" opacity="0.95">
+      <animate attributeName="ry" values="4.5;5.5;4.5" dur="1.2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.95;1;0.95" dur="0.8s" repeatCount="indefinite"/>
+    </ellipse>
+    <!-- 底部托盘 -->
+    <ellipse cx="20" cy="40" rx="6" ry="1.5" fill="#D4A574" opacity="0.7"/>
+    <!-- 穗子 -->
+    <path d="M18 41 Q17.5 48 16 54" stroke="#D4A574" stroke-width="0.8" fill="none" stroke-linecap="round">
+      <animate attributeName="d" values="M18 41 Q17.5 48 16 54;M18 41 Q18.5 48 17 54;M18 41 Q17.5 48 16 54" dur="3s" repeatCount="indefinite"/>
+    </path>
+    <path d="M20 41 Q20 49 20 56" stroke="#C8956E" stroke-width="1" fill="none" stroke-linecap="round">
+      <animate attributeName="d" values="M20 41 Q20 49 20 56;M20 41 Q19.5 49 19.5 56;M20 41 Q20 49 20 56" dur="2.5s" repeatCount="indefinite"/>
+    </path>
+    <path d="M22 41 Q22.5 48 24 54" stroke="#D4A574" stroke-width="0.8" fill="none" stroke-linecap="round">
+      <animate attributeName="d" values="M22 41 Q22.5 48 24 54;M22 41 Q21.5 48 23 54;M22 41 Q22.5 48 24 54" dur="3.2s" repeatCount="indefinite"/>
+    </path>
+    <circle cx="16" cy="54" r="1.2" fill="#C8956E" opacity="0.8"/>
+    <circle cx="20" cy="56" r="1.5" fill="#D4A574"/>
+    <circle cx="24" cy="54" r="1.2" fill="#C8956E" opacity="0.8"/>
+  </svg>`;
+}
+
+// ===== 花瓣飘落 =====
+const pCanvas = document.getElementById('petals-canvas');
+const pCtx = pCanvas.getContext('2d');
+let petals = [];
+
+function resizePetalCanvas() {
+  pCanvas.width = window.innerWidth;
+  pCanvas.height = window.innerHeight;
+}
+resizePetalCanvas();
+window.addEventListener('resize', resizePetalCanvas);
+
+const petalColors = [
+  'rgba(212,165,116,0.25)','rgba(194,160,160,0.2)',
+  'rgba(240,224,200,0.3)','rgba(200,149,110,0.15)',
+  'rgba(123,63,74,0.1)','rgba(232,200,160,0.25)'
+];
+
+class Petal {
+  constructor() { this.reset(true); }
+  reset(init) {
+    this.x = Math.random() * pCanvas.width;
+    this.y = init ? Math.random() * pCanvas.height : -20;
+    this.size = Math.random() * 5 + 3;
+    this.speedY = Math.random() * 0.5 + 0.2;
+    this.speedX = Math.random() * 0.4 - 0.2;
+    this.rotation = Math.random() * 360;
+    this.rotSpeed = Math.random() * 0.8 - 0.4;
+    this.color = petalColors[Math.floor(Math.random() * petalColors.length)];
+    this.opacity = Math.random() * 0.5 + 0.2;
+    this.swayFreq = Math.random() * 0.015 + 0.005;
+    this.swayOffset = Math.random() * Math.PI * 2;
+    this.scaleX = Math.random() * 0.4 + 0.8;
+    this.scaleY = Math.random() * 0.3 + 0.5;
+  }
+  update(time) {
+    this.y += this.speedY;
+    this.x += this.speedX + Math.sin(time * this.swayFreq + this.swayOffset) * 0.4;
+    this.rotation += this.rotSpeed;
+    if (this.y > pCanvas.height + 20) this.reset(false);
+  }
+  draw() {
+    pCtx.save();
+    pCtx.translate(this.x, this.y);
+    pCtx.rotate(this.rotation * Math.PI / 180);
+    pCtx.scale(this.scaleX, this.scaleY);
+    pCtx.globalAlpha = this.opacity;
+    pCtx.fillStyle = this.color;
+    pCtx.beginPath();
+    pCtx.ellipse(0, 0, this.size, this.size * 0.5, 0, 0, Math.PI * 2);
+    pCtx.fill();
+    pCtx.restore();
+  }
+}
+
+for (let i = 0; i < 30; i++) petals.push(new Petal());
+
+function animatePetals() {
+  pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
+  const time = Date.now();
+  petals.forEach(p => { p.update(time); p.draw(); });
+  requestAnimationFrame(animatePetals);
+}
+animatePetals();
+
+// ===== 光晕 =====
+const glow = document.getElementById('cursor-glow');
+document.addEventListener('mousemove', e => {
+  glow.style.left = e.clientX + 'px';
+  glow.style.top = e.clientY + 'px';
+});
+
+// ===== 封面 =====
+setTimeout(() => {
+  document.getElementById('hero-name').classList.add('visible');
+}, 300);
+
+// ===== 滚动显示 =====
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      if (entry.target.id === 'letter') startTypewriter();
+      if (entry.target.id === 'ending') startHeartRain();
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+revealObserver.observe(document.getElementById('letter'));
+revealObserver.observe(document.getElementById('ending'));
+
+// ===== 打字机 =====
+let typewriterStarted = false;
+function startTypewriter() {
+  if (typewriterStarted) return;
+  typewriterStarted = true;
+  const lines = document.querySelectorAll('#letter-body .type-line, #letter-body .quote, #letter-body .quote-left');
+  lines.forEach((line, i) => {
+    const delay = parseInt(line.dataset.delay) || i * 200;
+    setTimeout(() => line.classList.add('visible'), delay);
+  });
+  setTimeout(() => {
+    document.getElementById('letter-sig').classList.add('visible');
+  }, 14500);
+}
+
+// ===== 翻转 =====
+function flipCard(card) {
+  card.classList.toggle('flipped');
+  if (navigator.vibrate) navigator.vibrate(12);
+}
+
+// ===== 心动挑战 =====
+let heartScore = 0;
+let heartCompleted = false;
+const heartMessages = [
+  "心跳 +1 ✦",
+  "每一跳都是为你 ✦",
+  "越来越笃定了 ✦",
+  "你是我全部的确定性 ✦",
+  "想穿越所有平行宇宙去找你 ✦",
+  "心跳声里都是你的名字 ✦",
+  "浪漫至死，至死不渝 ✦",
+  "你是荒诞世界里的意义 ✦",
+  "你是我所有选择的答案 ✦",
+  "99 了——最后一下，给你我全部的心 ✦"
+];
+
+function getHeartMessage(score) {
+  if (score >= 100) return '100次心跳——我对你的爱，是这个荒诞世界里唯一的确定性。';
+  if (score === 99) return heartMessages[9];
+  if (score >= 91) return heartMessages[8];
+  if (score >= 81) return heartMessages[7];
+  if (score >= 71) return heartMessages[6];
+  if (score >= 61) return heartMessages[5];
+  if (score >= 51) return heartMessages[4];
+  if (score >= 41) return heartMessages[3];
+  if (score >= 31) return heartMessages[2];
+  if (score >= 21) return heartMessages[1];
+  return heartMessages[0];
+}
+
+function collectHeart(e) {
+  // 100次心跳达成后停止计数
+  if (heartCompleted) return;
+  const btn = document.getElementById('heart-btn');
+  heartScore++;
+  document.getElementById('heart-count').textContent = heartScore;
+  document.getElementById('heart-fill').style.width = Math.min(heartScore, 100) + '%';
+  document.getElementById('heart-percent').textContent = Math.min(heartScore, 100) + '%';
+
+  document.getElementById('heart-message').textContent = getHeartMessage(heartScore);
+
+  btn.classList.remove('pop');
+  void btn.offsetWidth;
+  btn.classList.add('pop');
+
+  if (navigator.vibrate) navigator.vibrate(18 + heartScore * 0.3);
+
+  // 高级爱心粒子爆发
+  const cx = e.clientX || window.innerWidth/2;
+  const cy = e.clientY || window.innerHeight/2;
+  spawnHeartParticles(cx, cy, 8 + Math.min(heartScore, 20));
+
+  if (heartScore === 100) {
+    heartCompleted = true;
+    document.getElementById('heart-message').textContent = '100次心跳——我对你的爱，是这个荒诞世界里唯一的确定性。';
+    document.getElementById('heart-message').style.color = 'var(--deep-wine)';
+    document.getElementById('heart-message').style.fontWeight = '500';
+    bigBurst(window.innerWidth/2, window.innerHeight/2);
+    spawnHeartParticles(window.innerWidth/2, window.innerHeight/2, 50);
+    if (navigator.vibrate) navigator.vibrate([50,30,50,30,100]);
+  }
+}
+
+// 高级爱心粒子系统
+function spawnHeartParticles(x, y, count) {
+  const container = document.getElementById('heart-particles');
+  const colors = ['var(--wine)','var(--rose-gold)','var(--dusty-rose)','var(--deep-wine)','var(--mauve)'];
+
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('span');
+    el.className = 'heart-particle';
+
+    const angle = Math.random() * Math.PI * 2;
+    const dist = Math.random() * 120 + 30;
+    const dx = Math.cos(angle) * dist;
+    const dy = Math.sin(angle) * dist - 40; // 偏上飘
+    const rot = (Math.random() * 180 - 90);
+    const dur = (Math.random() * 1.2 + 1);
+
+    el.innerHTML = createHeartSVG(
+      Math.random() * 8 + 10,
+      colors[Math.floor(Math.random() * colors.length)],
+      0.7
+    );
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    el.style.setProperty('--dx', dx + 'px');
+    el.style.setProperty('--dy', dy + 'px');
+    el.style.setProperty('--rot', rot + 'deg');
+    el.style.setProperty('--dur', dur + 's');
+
+    container.appendChild(el);
+    setTimeout(() => el.remove(), dur * 1000 + 100);
+  }
+}
+
+function spawnMiniBurst(x, y, count) {
+  const container = document.getElementById('overlay-burst');
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('span');
+    el.className = 'burst-particle';
+    el.innerHTML = createHeartSVG(Math.random()*8+12, 'var(--wine)', 0.6);
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    const angle = Math.random() * Math.PI * 2;
+    const dist = Math.random() * 50 + 15;
+    el.style.setProperty('--bx', Math.cos(angle) * dist + 'px');
+    el.style.setProperty('--by', Math.sin(angle) * dist + 'px');
+    el.style.setProperty('--rot', (Math.random() * 180 - 90) + 'deg');
+    container.appendChild(el);
+    setTimeout(() => el.remove(), 1500);
+  }
+}
+
+function bigBurst(x, y) {
+  const container = document.getElementById('overlay-burst');
+  const colors = ['var(--wine)','var(--rose-gold)','var(--dusty-rose)','var(--deep-wine)','var(--mauve)'];
+  for (let i = 0; i < 50; i++) {
+    const el = document.createElement('span');
+    el.className = 'burst-particle';
+    el.innerHTML = createHeartSVG(Math.random()*14+10, colors[Math.floor(Math.random()*colors.length)], 0.7);
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    const angle = Math.random() * Math.PI * 2;
+    const dist = Math.random() * 180 + 40;
+    el.style.setProperty('--bx', Math.cos(angle) * dist + 'px');
+    el.style.setProperty('--by', Math.sin(angle) * dist + 'px');
+    el.style.setProperty('--rot', (Math.random() * 360 - 180) + 'deg');
+    container.appendChild(el);
+    setTimeout(() => el.remove(), 1500);
+  }
+}
+
+// ===== 孔明灯 =====
+let lanternCount = 0;
+let lanternUID = 0;
+const lanternWishes = [
+  "愿你永远被这个世界温柔以待",
+  "愿你的眼泪永远只因为太幸福",
+  "愿你永远不会独自面对黑夜",
+  "愿我永远是你最安心的理由",
+  "愿你在我面前永远不必假装坚强",
+  "愿我们的故事比任何哲学都更动人",
+  "愿你每顿饭都有人陪，每个梦都有人听",
+  "愿下辈子，我还是第一个找到你的人",
+  "愿你所有的选择都通向幸福",
+  "愿你永远不必长大，在我这里可以做小孩"
+];
+
+function releaseLantern(e) {
+  const sky = document.getElementById('lantern-sky');
+  lanternUID++;
+
+  // 随机水平位置：在整个屏幕宽度范围内随机，避免拥挤
+  const viewW = window.innerWidth;
+  const randomX = Math.random() * (viewW * 0.7) + viewW * 0.15;
+
+  // 随机动画参数
+  const dur = (Math.random() * 5 + 9); // 9-14秒上升
+  const sway1 = (Math.random() * 8 - 4); // -4到4度
+  const sway2 = (Math.random() * 12 - 6);
+  const sway3 = (Math.random() * 8 - 4);
+  const scale = Math.random() * 0.4 + 0.8; // 0.8-1.2 大小随机
+
+  const lantern = document.createElement('div');
+  lantern.className = 'lantern-el';
+  lantern.style.left = randomX + 'px';
+  lantern.style.bottom = '-80px';
+  lantern.style.setProperty('--dur', dur + 's');
+  lantern.style.setProperty('--sway1', sway1 + 'deg');
+  lantern.style.setProperty('--sway2', sway2 + 'deg');
+  lantern.style.setProperty('--sway3', sway3 + 'deg');
+  lantern.style.transform = `scale(${scale})`;
+  lantern.innerHTML = createLanternSVG(scale);
+  sky.appendChild(lantern);
+
+  // 愿望气泡
+  const wish = document.createElement('div');
+  wish.className = 'lantern-wish';
+  wish.textContent = lanternWishes[lanternCount % lanternWishes.length];
+  wish.style.left = randomX + 'px';
+  wish.style.top = (window.innerHeight * 0.65) + 'px';
+  wish.style.transform = 'translateX(-50%)';
+  document.body.appendChild(wish);
+
+  lanternCount++;
+  document.getElementById('lantern-count').textContent = '已放飞 ' + lanternCount + ' 盏灯';
+
+  if (navigator.vibrate) navigator.vibrate(25);
+
+  setTimeout(() => { lantern.remove(); wish.remove(); }, dur * 1000 + 500);
+  spawnMiniBurst(randomX, window.innerHeight * 0.7, 4);
+}
+
+// ===== 爱心雨 =====
+let rainStarted = false;
+function startHeartRain() {
+  if (rainStarted) return;
+  rainStarted = true;
+  const container = document.getElementById('rain-container');
+  const colors = ['var(--wine)','var(--rose-gold)','var(--dusty-rose)','var(--deep-wine)','var(--mauve)'];
+
+  function dropOne() {
+    const h = document.createElement('span');
+    h.className = 'rain-heart';
+    h.innerHTML = createHeartSVG(Math.random()*8+10, colors[Math.floor(Math.random()*colors.length)], 0.5);
+    h.style.left = Math.random() * 100 + '%';
+    h.style.setProperty('--dur', (Math.random() * 3 + 5) + 's');
+    h.style.setProperty('--rot', (Math.random() * 120 - 60) + 'deg');
+    container.appendChild(h);
+    setTimeout(() => h.remove(), 8000);
+  }
+
+  let burst = 0;
+  const burstInterval = setInterval(() => {
+    dropOne();
+    burst++;
+    if (burst > 30) {
+      clearInterval(burstInterval);
+      setInterval(dropOne, 1000);
+    }
+  }, 100);
+}
+
+// ===== 结尾按钮 =====
+function finalBurst(e) {
+  const btn = e.currentTarget;
+  btn.textContent = '浪漫至死';
+  btn.style.background = 'linear-gradient(135deg,var(--deep-wine),var(--burgundy))';
+  bigBurst(e.clientX || window.innerWidth/2, e.clientY || window.innerHeight/2);
+  spawnHeartParticles(e.clientX || window.innerWidth/2, e.clientY || window.innerHeight/2, 40);
+  if (navigator.vibrate) navigator.vibrate([80,40,80,40,150]);
+
+  const container = document.getElementById('rain-container');
+  const colors = ['var(--wine)','var(--rose-gold)','var(--dusty-rose)','var(--deep-wine)'];
+  for (let i = 0; i < 25; i++) {
+    setTimeout(() => {
+      const h = document.createElement('span');
+      h.className = 'rain-heart';
+      h.innerHTML = createHeartSVG(Math.random()*10+8, colors[Math.floor(Math.random()*colors.length)], 0.6);
+      h.style.left = Math.random() * 100 + '%';
+      h.style.setProperty('--dur', (Math.random() * 2 + 3) + 's');
+      h.style.setProperty('--rot', (Math.random() * 120 - 60) + 'deg');
+      container.appendChild(h);
+      setTimeout(() => h.remove(), 5000);
+    }, i * 70);
+  }
+}
+
+// ===== 全局点击飘爱心 =====
+document.addEventListener('click', e => {
+  if (e.target.closest('button') || e.target.closest('.poem-flip') || e.target.closest('.heart-btn') || e.target.closest('.lantern-tap-area')) return;
+
+  const container = document.getElementById('float-hearts');
+  const heart = document.createElement('span');
+  heart.className = 'float-heart';
+  const colors = ['var(--wine)','var(--rose-gold)','var(--dusty-rose)'];
+  heart.innerHTML = createHeartSVG(Math.random()*6+10, colors[Math.floor(Math.random()*colors.length)], 0.4);
+  heart.style.left = e.clientX + 'px';
+  heart.style.top = e.clientY + 'px';
+  heart.style.setProperty('--dur', (Math.random() * 3 + 4) + 's');
+  heart.style.setProperty('--rot', (Math.random() * 60 - 30) + 'deg');
+  heart.style.setProperty('--op', (Math.random() * 0.3 + 0.25));
+  container.appendChild(heart);
+  setTimeout(() => heart.remove(), 7000);
+});
+
+// ===== 音乐：Hexmaloo - Love Me Harder =====
+let audio = null, musicPlaying = false;
+let musicUserPaused = false; // 用户是否主动暂停过音乐
+const musicBtn = document.getElementById('music-btn');
+
+// 初始化音频并立即播放
+function initAndPlay() {
+  audio = new Audio();
+  audio.src = 'bgm.mp3';
+  audio.loop = true;
+  audio.volume = 0.5;
+  audio.preload = 'auto';
+  audio.play().then(() => {
+    musicPlaying = true;
+    updateMusicBtn();
+  }).catch(() => {
+    // 浏览器阻止自动播放，等用户交互
+    musicPlaying = false;
+    updateMusicBtn();
+  });
+}
+
+// 页面加载后立即尝试播放
+initAndPlay();
+
+// 如果首次播放被阻止，用户任意点击后重试（但不包括用户主动暂停的情况）
+document.addEventListener('click', function retryPlay() {
+  if (!musicPlaying && audio && audio.paused && !musicUserPaused) {
+    audio.play().then(() => {
+      musicPlaying = true;
+      musicUserPaused = false;
+      updateMusicBtn();
+    }).catch(() => {});
+  }
+}, { once: false });
+
+function updateMusicBtn() {
+  if (musicPlaying) {
+    musicBtn.classList.add('playing');
+    musicBtn.innerHTML = `<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><span>静音</span>`;
+  } else {
+    musicBtn.classList.remove('playing');
+    musicBtn.innerHTML = `<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg><span>音乐</span>`;
+  }
+}
+
+function toggleMusic() {
+  if (!audio) return;
+  if (musicPlaying) {
+    audio.pause();
+    musicPlaying = false;
+    musicUserPaused = true; // 标记为用户主动暂停
+    updateMusicBtn();
+  } else {
+    audio.play().then(() => {
+      musicPlaying = true;
+      musicUserPaused = false; // 用户主动恢复，清除暂停标记
+      updateMusicBtn();
+    }).catch(() => {});
+  }
+}
+
+// ===== Console =====
+console.log('%c💌 小荣包，这里有个人很想你。','color:#5C2D3E; font-size:14px; font-weight:bold;');
+console.log('%c✦ 如果你看到了这行字，说明他把心意交给了你。','color:#C8956E; font-size:12px;');
+console.log('%c✦ 他一定，非常非常爱你。','color:#7B3F4A; font-size:12px;');
+</script>
+</body>
+</html>
+
