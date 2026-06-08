@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -358,81 +358,88 @@ body:hover #cursor-glow{opacity:1;}
   100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(0.2) rotate(var(--rot));}
 }
 
-/* ===== 第五屏：孔明灯 ===== */
-.lantern-section{
+/* ===== 第五屏：萤火心愿 ===== */
+.firefly-section{
   min-height:100dvh;padding:4rem 1.5rem;
   position:relative;overflow:hidden;
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;
-  background:linear-gradient(180deg,var(--cream) 0%,#F5E8D8 30%,#EDDCBE 60%,#E0CCAA 100%);
+  background:linear-gradient(180deg,#0d1a0d 0%,#0a1a12 30%,#0d1a0d 60%,#06120a 100%);
 }
-
-/* 夜空星光点 */
-.lantern-section::before{
+.firefly-section::before{
   content:'';position:absolute;top:0;left:0;right:0;bottom:0;
   background-image:
-    radial-gradient(1px 1px at 15% 20%,rgba(196,149,110,0.3),transparent),
-    radial-gradient(1px 1px at 45% 10%,rgba(196,149,110,0.2),transparent),
-    radial-gradient(1px 1px at 75% 25%,rgba(196,149,110,0.25),transparent),
-    radial-gradient(1px 1px at 25% 40%,rgba(196,149,110,0.15),transparent),
-    radial-gradient(1px 1px at 60% 35%,rgba(196,149,110,0.2),transparent),
-    radial-gradient(1px 1px at 85% 15%,rgba(196,149,110,0.18),transparent),
-    radial-gradient(1px 1px at 10% 55%,rgba(196,149,110,0.12),transparent),
-    radial-gradient(1px 1px at 90% 45%,rgba(196,149,110,0.15),transparent);
+    radial-gradient(1px 1px at 10% 80%,rgba(160,255,80,0.15),transparent),
+    radial-gradient(1px 1px at 30% 60%,rgba(160,255,80,0.1),transparent),
+    radial-gradient(1.5px 1.5px at 70% 30%,rgba(255,255,255,0.15),transparent),
+    radial-gradient(1px 1px at 85% 70%,rgba(160,255,80,0.12),transparent),
+    radial-gradient(1.5px 1.5px at 50% 20%,rgba(255,255,255,0.1),transparent),
+    radial-gradient(1px 1px at 20% 40%,rgba(255,255,255,0.08),transparent),
+    radial-gradient(1px 1px at 60% 75%,rgba(160,255,80,0.08),transparent),
+    radial-gradient(1px 1px at 90% 15%,rgba(255,255,255,0.1),transparent);
   pointer-events:none;z-index:0;
 }
-
-.lantern-sky{
+.firefly-section::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:28%;
+  background:linear-gradient(180deg,transparent 0%,rgba(6,18,10,0.5) 40%,rgba(4,14,4,0.8) 100%);
+  pointer-events:none;z-index:0;
+}
+.firefly-section .section-title{color:#E8FFD6 !important;}
+.firefly-section .section-title em{color:#80E040 !important;}
+.firefly-sky{
   position:absolute;top:0;left:0;right:0;bottom:0;
   pointer-events:none;z-index:1;
 }
-
-/* 精致孔明灯 SVG 样式 */
-.lantern-el{
+.firefly-el{
   position:absolute;z-index:2;
   pointer-events:none;
-  filter:drop-shadow(0 0 14px rgba(232,170,80,0.4)) drop-shadow(0 0 30px rgba(255,200,100,0.15));
-  animation:lanternFloat var(--dur) cubic-bezier(0.25,0.1,0.25,1) forwards;
+  animation:fireflyFloat var(--dur) ease-in-out forwards;
 }
-@keyframes lanternFloat{
-  0%{opacity:0;transform:translateY(0) scale(0.4) rotate(0deg);}
-  6%{opacity:1;transform:translateY(-5vh) scale(1) rotate(calc(var(--sway1)*0.3));}
-  25%{transform:translateY(-30vh) scale(1) rotate(var(--sway1));}
-  50%{opacity:0.9;transform:translateY(-60vh) scale(0.9) rotate(var(--sway2));}
-  75%{opacity:0.5;transform:translateY(-90vh) scale(0.75) rotate(var(--sway3));}
-  100%{opacity:0;transform:translateY(-130vh) scale(0.5) rotate(var(--sway3));}
+@keyframes fireflyFloat{
+  0%{opacity:0;transform:translate(0,0) scale(0.3);}
+  8%{opacity:1;transform:translate(var(--dx1),var(--dy1)) scale(1);}
+  20%{opacity:0.6;transform:translate(var(--dx2),var(--dy2)) scale(0.9);}
+  35%{opacity:1;transform:translate(var(--dx3),var(--dy3)) scale(1.1);}
+  50%{opacity:0.5;transform:translate(var(--dx4),var(--dy4)) scale(0.85);}
+  65%{opacity:1;transform:translate(var(--dx5),var(--dy5)) scale(1.05);}
+  80%{opacity:0.6;transform:translate(var(--dx6),var(--dy6)) scale(0.9);}
+  100%{opacity:0;transform:translate(var(--dx7),var(--dy7)) scale(0.2);}
 }
-
-.lantern-wish{
+.firefly-el svg{filter:drop-shadow(0 0 8px rgba(160,255,80,0.7)) drop-shadow(0 0 20px rgba(160,255,80,0.3));}
+.firefly-wish{
   position:fixed;
-  background:rgba(255,252,248,0.92);backdrop-filter:blur(12px);
+  background:rgba(13,26,13,0.85);backdrop-filter:blur(12px);
   -webkit-backdrop-filter:blur(12px);
-  padding:8px 18px;border-radius:24px;
-  font-size:0.78rem;color:var(--wine);
-  white-space:nowrap;font-weight:300;
-  border:1px solid rgba(196,149,110,0.15);
-  box-shadow:0 4px 20px rgba(92,45,62,0.06);
-  opacity:0;animation:showWish 0.7s cubic-bezier(0.4,0,0.2,1) 0.2s forwards;
+  padding:10px 20px;border-radius:24px;
+  font-size:0.78rem;color:#D0FFB0;
+  white-space:normal;max-width:200px;text-align:center;
+  font-weight:300;line-height:1.6;
+  border:1px solid rgba(160,255,80,0.2);
+  box-shadow:0 4px 20px rgba(160,255,80,0.08);
+  opacity:0;animation:showWish 0.7s cubic-bezier(0.4,0,0.2,1) 0.3s forwards;
   pointer-events:none;z-index:3;
 }
-@keyframes showWish{from{opacity:0;transform:translateX(-50%) translateY(10px) scale(0.9);}to{opacity:1;transform:translateX(-50%) translateY(0) scale(1);}}
-
-.lantern-tap-area{
+@keyframes showWish{
+  0%{opacity:0;transform:translateY(10px) scale(0.9);}
+  100%{opacity:1;transform:translateY(0) scale(1);}
+}
+.firefly-tap-area{
   width:160px;height:160px;border-radius:50%;
-  border:1.5px dashed rgba(196,149,110,0.25);
+  border:1.5px dashed rgba(160,255,80,0.25);
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;
   margin:2rem auto;cursor:pointer;
   transition:all 0.4s;position:relative;z-index:2;
-  background:rgba(255,252,248,0.35);
+  background:rgba(13,26,13,0.4);
 }
-.lantern-tap-area:hover{
-  border-color:rgba(196,149,110,0.45);
-  background:rgba(255,252,248,0.55);
+.firefly-tap-area:hover{
+  border-color:rgba(160,255,80,0.5);
+  background:rgba(13,26,13,0.6);
   transform:scale(1.04);
+  box-shadow:0 0 40px rgba(160,255,80,0.15);
 }
-.lantern-tap-area .tap-icon svg{width:40px;height:56px;}
-.lantern-tap-area .tap-text{font-size:0.78rem;color:var(--mauve);letter-spacing:3px;font-weight:300;margin-top:0.6rem;}
+.firefly-tap-area .tap-icon svg{width:40px;height:40px;}
+.firefly-tap-area .tap-text{font-size:0.78rem;color:#D0FFB0;letter-spacing:3px;font-weight:300;margin-top:0.6rem;}
 
 /* ===== 第六屏：结尾 ===== */
 .ending-section{
@@ -543,7 +550,7 @@ body:hover #cursor-glow{opacity:1;}
   .letter-body{font-size:0.92rem;line-height:2.3;}
   .heart-btn{width:100px;height:100px;}
   .heart-btn .heart-svg{width:40px;height:36px;}
-  .lantern-tap-area{width:140px;height:140px;}
+  .firefly-tap-area{width:140px;height:140px;}
   .hero-name{letter-spacing:8px;}
 }
 </style>
@@ -564,7 +571,7 @@ body:hover #cursor-glow{opacity:1;}
       'url':location.href,
       'referrer':document.referrer,
       'title':document.title,
-      'sandbox_id':'a1b79d654e1f40ebae56cb3c68299fd5'
+      'sandbox_id':'610792fc85b5414d9f7f9840b7b7cbe0'
     });
   }catch(e){}
 })();
@@ -580,7 +587,7 @@ body:hover #cursor-glow{opacity:1;}
 <!-- 音乐按钮：初始显示"音乐 开"，播放中显示"音乐 🔇" -->
 <button id="music-btn" onclick="toggleMusic()">
   <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-  <span>静音</span>
+  <span>音乐 关</span>
 </button>
 
 <!-- 特效层 -->
@@ -751,73 +758,39 @@ body:hover #cursor-glow{opacity:1;}
   </div>
 </section>
 
-<!-- ===== 第五屏：孔明灯 ===== -->
-<section class="lantern-section page" id="lantern">
-  <div class="lantern-sky" id="lantern-sky"></div>
+<!-- ===== 第五屏：萤火心愿 ===== -->
+<section class="firefly-section page" id="lantern">
+  <div class="firefly-sky" id="lantern-sky"></div>
   <h2 class="section-title" style="position:relative;z-index:2;">Make a <em>Wish</em></h2>
-  <p style="color:var(--mauve);font-size:0.88rem;text-align:center;margin-bottom:1rem;position:relative;z-index:2;line-height:1.9;font-weight:300;">
-    轻轻点一盏灯，<br>每一盏都载着一个关于你的愿望
+  <p style="color:#E8D5A0;font-size:0.88rem;text-align:center;margin-bottom:1rem;position:relative;z-index:2;line-height:1.9;font-weight:300;">
+    轻轻召唤一只萤火虫，<br>每一只都载着一个关于你的愿望
   </p>
-  <div class="lantern-tap-area" id="lantern-tap" onclick="releaseLantern(event)">
+  <div class="firefly-tap-area" id="star-tap" onclick="releaseFirefly(event)">
     <span class="tap-icon">
-      <svg viewBox="0 0 40 64" fill="none">
-        <!-- 灯笼顶部提梁 -->
-        <path d="M16 6 Q20 2 24 6" stroke="#C8956E" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-        <rect x="17" y="5" width="6" height="3" rx="1.5" fill="#D4A574"/>
-        <!-- 灯体 - 优美曲线轮廓 -->
-        <path d="M8 20 Q8 8 20 8 Q32 8 32 20 Q32 36 20 40 Q8 36 8 20Z" fill="url(#tapLanternGrad)"/>
-        <!-- 灯体金色边框 -->
-        <path d="M8 20 Q8 8 20 8 Q32 8 32 20 Q32 36 20 40 Q8 36 8 20Z" stroke="rgba(212,165,116,0.35)" stroke-width="0.8" fill="none"/>
-        <!-- 灯体装饰横线 -->
-        <path d="M9 16 Q20 14 31 16" stroke="rgba(255,220,150,0.45)" stroke-width="0.5" fill="none"/>
-        <path d="M8.5 22 Q20 20 31.5 22" stroke="rgba(255,220,150,0.3)" stroke-width="0.5" fill="none"/>
-        <path d="M9 28 Q20 26 31 28" stroke="rgba(255,220,150,0.45)" stroke-width="0.5" fill="none"/>
-        <!-- 灯内火焰光晕 -->
-        <ellipse cx="20" cy="22" rx="6" ry="8" fill="url(#tapFlameGlow)" opacity="0.4"/>
-        <!-- 灯内火焰 -->
-        <ellipse cx="20" cy="20" rx="2.5" ry="4.5" fill="url(#tapFlameGrad)" opacity="0.95">
-          <animate attributeName="ry" values="4.5;5.5;4.5" dur="1.2s" repeatCount="indefinite"/>
-          <animate attributeName="opacity" values="0.95;1;0.95" dur="0.8s" repeatCount="indefinite"/>
-        </ellipse>
-        <!-- 底部托盘 -->
-        <ellipse cx="20" cy="40" rx="6" ry="1.5" fill="#D4A574" opacity="0.7"/>
-        <!-- 底部穗子 - 更飘逸 -->
-        <path d="M18 41 Q17.5 48 16 54" stroke="#D4A574" stroke-width="0.8" fill="none" stroke-linecap="round">
-          <animate attributeName="d" values="M18 41 Q17.5 48 16 54;M18 41 Q18.5 48 17 54;M18 41 Q17.5 48 16 54" dur="3s" repeatCount="indefinite"/>
-        </path>
-        <path d="M20 41 Q20 49 20 56" stroke="#C8956E" stroke-width="1" fill="none" stroke-linecap="round">
-          <animate attributeName="d" values="M20 41 Q20 49 20 56;M20 41 Q19.5 49 19.5 56;M20 41 Q20 49 20 56" dur="2.5s" repeatCount="indefinite"/>
-        </path>
-        <path d="M22 41 Q22.5 48 24 54" stroke="#D4A574" stroke-width="0.8" fill="none" stroke-linecap="round">
-          <animate attributeName="d" values="M22 41 Q22.5 48 24 54;M22 41 Q21.5 48 23 54;M22 41 Q22.5 48 24 54" dur="3.2s" repeatCount="indefinite"/>
-        </path>
-        <!-- 穗头珠子 -->
-        <circle cx="16" cy="54" r="1.2" fill="#C8956E" opacity="0.8"/>
-        <circle cx="20" cy="56" r="1.5" fill="#D4A574"/>
-        <circle cx="24" cy="54" r="1.2" fill="#C8956E" opacity="0.8"/>
+      <svg viewBox="0 0 48 48" fill="none" width="44" height="44">
         <defs>
-          <radialGradient id="tapLanternGrad" cx="50%" cy="38%" r="58%">
-            <stop offset="0%" stop-color="#FFF5E0"/>
-            <stop offset="30%" stop-color="#FFE4B5"/>
-            <stop offset="65%" stop-color="#F0B840"/>
-            <stop offset="100%" stop-color="#CC7722"/>
-          </radialGradient>
-          <radialGradient id="tapFlameGrad" cx="50%" cy="30%">
-            <stop offset="0%" stop-color="#FFFDE8"/>
-            <stop offset="40%" stop-color="#FFE066"/>
-            <stop offset="100%" stop-color="rgba(255,165,0,0.2)"/>
-          </radialGradient>
-          <radialGradient id="tapFlameGlow" cx="50%" cy="40%">
-            <stop offset="0%" stop-color="rgba(255,240,200,0.6)"/>
-            <stop offset="100%" stop-color="rgba(255,200,100,0)"/>
+          <radialGradient id="tapFireflyGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#A8FF60"/>
+            <stop offset="30%" stop-color="#80E040"/>
+            <stop offset="70%" stop-color="rgba(160,255,80,0.3)"/>
+            <stop offset="100%" stop-color="rgba(160,255,80,0)"/>
           </radialGradient>
         </defs>
+        <circle cx="24" cy="24" r="20" fill="url(#tapFireflyGlow)" opacity="0.5">
+          <animate attributeName="r" values="20;23;20" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.5;0.7;0.5" dur="1.6s" repeatCount="indefinite"/>
+        </circle>
+        <ellipse cx="24" cy="26" rx="5" ry="7" fill="#3A2A10" opacity="0.7"/>
+        <ellipse cx="24" cy="20" rx="3.5" ry="4" fill="#80E040" opacity="0.9">
+          <animate attributeName="opacity" values="0.9;1;0.7;1;0.9" dur="1.8s" repeatCount="indefinite"/>
+          <animate attributeName="ry" values="4;4.5;3.5;4.5;4" dur="2.2s" repeatCount="indefinite"/>
+        </ellipse>
       </svg>
     </span>
-    <span class="tap-text">点 我 放 灯</span>
+    <span class="tap-text">召唤萤火</span>
   </div>
-  <p id="lantern-count" style="color:var(--mauve);font-size:0.75rem;letter-spacing:3px;position:relative;z-index:2;font-weight:300;">
-    已放飞 0 盏灯
+  <p id="lantern-count" style="color:#E8D5A0;font-size:0.75rem;letter-spacing:3px;position:relative;z-index:2;font-weight:300;">
+    已召唤 0 只萤火虫
   </p>
 </section>
 
@@ -853,62 +826,29 @@ function createHeartSVG(size=16, color='var(--wine)', opacity=0.7) {
   return `<svg width="${size}" height="${size}" viewBox="0 0 32 30" style="opacity:${opacity}"><path d="M16 28S3 18 3 10a6.5 6.5 0 0112-3.5A6.5 6.5 0 0127 10c0 8-11 18-11 18z" fill="${color}"/></svg>`;
 }
 
-// ===== 精致孔明灯SVG生成 =====
-function createLanternSVG(scale=1) {
-  const s = scale;
-  const uid = lanternUID;
-  return `<svg width="${40*s}" height="${64*s}" viewBox="0 0 40 64" fill="none" style="overflow:visible">
-    <defs>
-      <radialGradient id="lg${uid}" cx="50%" cy="38%" r="58%">
-        <stop offset="0%" stop-color="#FFF5E0"/>
-        <stop offset="30%" stop-color="#FFE4B5"/>
-        <stop offset="65%" stop-color="#F0B840"/>
-        <stop offset="100%" stop-color="#CC7722"/>
-      </radialGradient>
-      <radialGradient id="fg${uid}" cx="50%" cy="30%">
-        <stop offset="0%" stop-color="#FFFDE8"/>
-        <stop offset="40%" stop-color="#FFE066"/>
-        <stop offset="100%" stop-color="rgba(255,165,0,0.2)"/>
-      </radialGradient>
-      <radialGradient id="fgl${uid}" cx="50%" cy="40%">
-        <stop offset="0%" stop-color="rgba(255,240,200,0.6)"/>
-        <stop offset="100%" stop-color="rgba(255,200,100,0)"/>
-      </radialGradient>
-    </defs>
-    <!-- 提梁 -->
-    <path d="M16 6 Q20 2 24 6" stroke="#C8956E" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-    <rect x="17" y="5" width="6" height="3" rx="1.5" fill="#D4A574"/>
-    <!-- 灯体 -->
-    <path d="M8 20 Q8 8 20 8 Q32 8 32 20 Q32 36 20 40 Q8 36 8 20Z" fill="url(#lg${uid})"/>
-    <path d="M8 20 Q8 8 20 8 Q32 8 32 20 Q32 36 20 40 Q8 36 8 20Z" stroke="rgba(212,165,116,0.35)" stroke-width="0.8" fill="none"/>
-    <!-- 装饰线 -->
-    <path d="M9 16 Q20 14 31 16" stroke="rgba(255,220,150,0.45)" stroke-width="0.5" fill="none"/>
-    <path d="M8.5 22 Q20 20 31.5 22" stroke="rgba(255,220,150,0.3)" stroke-width="0.5" fill="none"/>
-    <path d="M9 28 Q20 26 31 28" stroke="rgba(255,220,150,0.45)" stroke-width="0.5" fill="none"/>
-    <!-- 火焰光晕 -->
-    <ellipse cx="20" cy="22" rx="6" ry="8" fill="url(#fgl${uid})" opacity="0.4"/>
-    <!-- 火焰 -->
-    <ellipse cx="20" cy="20" rx="2.5" ry="4.5" fill="url(#fg${uid})" opacity="0.95">
-      <animate attributeName="ry" values="4.5;5.5;4.5" dur="1.2s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.95;1;0.95" dur="0.8s" repeatCount="indefinite"/>
-    </ellipse>
-    <!-- 底部托盘 -->
-    <ellipse cx="20" cy="40" rx="6" ry="1.5" fill="#D4A574" opacity="0.7"/>
-    <!-- 穗子 -->
-    <path d="M18 41 Q17.5 48 16 54" stroke="#D4A574" stroke-width="0.8" fill="none" stroke-linecap="round">
-      <animate attributeName="d" values="M18 41 Q17.5 48 16 54;M18 41 Q18.5 48 17 54;M18 41 Q17.5 48 16 54" dur="3s" repeatCount="indefinite"/>
-    </path>
-    <path d="M20 41 Q20 49 20 56" stroke="#C8956E" stroke-width="1" fill="none" stroke-linecap="round">
-      <animate attributeName="d" values="M20 41 Q20 49 20 56;M20 41 Q19.5 49 19.5 56;M20 41 Q20 49 20 56" dur="2.5s" repeatCount="indefinite"/>
-    </path>
-    <path d="M22 41 Q22.5 48 24 54" stroke="#D4A574" stroke-width="0.8" fill="none" stroke-linecap="round">
-      <animate attributeName="d" values="M22 41 Q22.5 48 24 54;M22 41 Q21.5 48 23 54;M22 41 Q22.5 48 24 54" dur="3.2s" repeatCount="indefinite"/>
-    </path>
-    <circle cx="16" cy="54" r="1.2" fill="#C8956E" opacity="0.8"/>
-    <circle cx="20" cy="56" r="1.5" fill="#D4A574"/>
-    <circle cx="24" cy="54" r="1.2" fill="#C8956E" opacity="0.8"/>
-  </svg>`;
-}
+// ===== 萤火虫SVG =====
+function createFireflySVG(size) {
+  const uid = 'ff' + Math.random().toString(36).substr(2,6);
+  return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 30 30" fill="none">' +
+    '<defs>' +
+      '<radialGradient id="fg' + uid + '" cx="50%" cy="45%" r="50%">' +
+        '<stop offset="0%" stop-color="#C8FF60"/>' +
+        '<stop offset="50%" stop-color="#80E040"/>' +
+        '<stop offset="100%" stop-color="rgba(128,224,64,0)"/>' +
+      '</radialGradient>' +
+    '</defs>' +
+    '<circle cx="15" cy="15" r="12" fill="url(#fg' + uid + ')" opacity="0.25">' +
+      '<animate attributeName="r" values="12;14;12" dur="2s" repeatCount="indefinite"/>' +
+      '<animate attributeName="opacity" values="0.25;0.4;0.25" dur="1.6s" repeatCount="indefinite"/>' +
+    '</circle>' +
+    '<ellipse cx="15" cy="15" rx="3" ry="3.5" fill="#A0FF50" opacity="0.9">' +
+      '<animate attributeName="opacity" values="0.9;0.4;1;0.5;0.9" dur="2.5s" repeatCount="indefinite"/>' +
+      '<animate attributeName="ry" values="3.5;4;3;3.5" dur="1.8s" repeatCount="indefinite"/>' +
+    '</ellipse>' +
+    '<ellipse cx="15" cy="20" rx="2" ry="4" fill="#3A2A10" opacity="0.6"/>' +
+    '<line x1="13" y1="23" x2="11" y2="28" stroke="#3A2A10" stroke-width="0.5" opacity="0.4"/>' +
+    '<line x1="17" y1="23" x2="19" y2="28" stroke="#3A2A10" stroke-width="0.5" opacity="0.4"/>' +
+  '</svg>';
 
 // ===== 花瓣飘落 =====
 const pCanvas = document.getElementById('petals-canvas');
@@ -1025,7 +965,7 @@ function flipCard(card) {
 
 // ===== 心动挑战 =====
 let heartScore = 0;
-let heartCompleted = false;
+let heartCompleted = false; // 是否已完成100次
 const heartMessages = [
   "心跳 +1 ✦",
   "每一跳都是为你 ✦",
@@ -1035,34 +975,34 @@ const heartMessages = [
   "心跳声里都是你的名字 ✦",
   "浪漫至死，至死不渝 ✦",
   "你是荒诞世界里的意义 ✦",
-  "你是我所有选择的答案 ✦",
-  "99 了——最后一下，给你我全部的心 ✦"
+  "你是我所有选择的答案 ✦"
 ];
 
-function getHeartMessage(score) {
-  if (score >= 100) return '100次心跳——我对你的爱，是这个荒诞世界里唯一的确定性。';
-  if (score === 99) return heartMessages[9];
-  if (score >= 91) return heartMessages[8];
-  if (score >= 81) return heartMessages[7];
-  if (score >= 71) return heartMessages[6];
-  if (score >= 61) return heartMessages[5];
-  if (score >= 51) return heartMessages[4];
-  if (score >= 41) return heartMessages[3];
-  if (score >= 31) return heartMessages[2];
-  if (score >= 21) return heartMessages[1];
-  return heartMessages[0];
-}
-
 function collectHeart(e) {
-  // 100次心跳达成后停止计数
+  // 100次后停止
   if (heartCompleted) return;
+  
   const btn = document.getElementById('heart-btn');
   heartScore++;
   document.getElementById('heart-count').textContent = heartScore;
   document.getElementById('heart-fill').style.width = Math.min(heartScore, 100) + '%';
   document.getElementById('heart-percent').textContent = Math.min(heartScore, 100) + '%';
 
-  document.getElementById('heart-message').textContent = getHeartMessage(heartScore);
+  // 修复文案索引：只有99次才显示特殊文案
+  let msg;
+  if (heartScore === 99) {
+    msg = "99了——最后一下，给你我全部的心 ✦";
+  } else if (heartScore === 100) {
+    msg = ''; // 100次有特殊处理
+  } else {
+    // 0-98次：每10次换一次文案
+    let msgIdx = Math.min(Math.floor(heartScore / 10), heartMessages.length - 1);
+    msg = heartMessages[msgIdx];
+  }
+  
+  if (msg) {
+    document.getElementById('heart-message').textContent = msg;
+  }
 
   btn.classList.remove('pop');
   void btn.offsetWidth;
@@ -1076,7 +1016,7 @@ function collectHeart(e) {
   spawnHeartParticles(cx, cy, 8 + Math.min(heartScore, 20));
 
   if (heartScore === 100) {
-    heartCompleted = true;
+    heartCompleted = true; // 标记已完成
     document.getElementById('heart-message').textContent = '100次心跳——我对你的爱，是这个荒诞世界里唯一的确定性。';
     document.getElementById('heart-message').style.color = 'var(--deep-wine)';
     document.getElementById('heart-message').style.fontWeight = '500';
@@ -1156,10 +1096,10 @@ function bigBurst(x, y) {
   }
 }
 
-// ===== 孔明灯 =====
-let lanternCount = 0;
-let lanternUID = 0;
-const lanternWishes = [
+// ===== 点亮星光 =====
+let starCount = 0;
+let starUID = 0;
+const starWishes = [
   "愿你永远被这个世界温柔以待",
   "愿你的眼泪永远只因为太幸福",
   "愿你永远不会独自面对黑夜",
@@ -1172,49 +1112,74 @@ const lanternWishes = [
   "愿你永远不必长大，在我这里可以做小孩"
 ];
 
-function releaseLantern(e) {
+function releaseFirefly(e) {
   const sky = document.getElementById('lantern-sky');
-  lanternUID++;
+  starUID++;
 
-  // 随机水平位置：在整个屏幕宽度范围内随机，避免拥挤
   const viewW = window.innerWidth;
-  const randomX = Math.random() * (viewW * 0.7) + viewW * 0.15;
+  const viewH = window.innerHeight;
+  const startX = Math.random() * (viewW * 0.6) + viewW * 0.2;
+  const startY = Math.random() * (viewH * 0.4) + viewH * 0.3;
+  const dur = (Math.random() * 6 + 10);
+  const fireflySize = Math.random() * 8 + 14;
 
-  // 随机动画参数
-  const dur = (Math.random() * 5 + 9); // 9-14秒上升
-  const sway1 = (Math.random() * 8 - 4); // -4到4度
-  const sway2 = (Math.random() * 12 - 6);
-  const sway3 = (Math.random() * 8 - 4);
-  const scale = Math.random() * 0.4 + 0.8; // 0.8-1.2 大小随机
+  function rndDx() { return (Math.random() * 120 - 60) + 'px'; }
+  function rndDy() { return (Math.random() * 100 - 50) + 'px'; }
 
-  const lantern = document.createElement('div');
-  lantern.className = 'lantern-el';
-  lantern.style.left = randomX + 'px';
-  lantern.style.bottom = '-80px';
-  lantern.style.setProperty('--dur', dur + 's');
-  lantern.style.setProperty('--sway1', sway1 + 'deg');
-  lantern.style.setProperty('--sway2', sway2 + 'deg');
-  lantern.style.setProperty('--sway3', sway3 + 'deg');
-  lantern.style.transform = `scale(${scale})`;
-  lantern.innerHTML = createLanternSVG(scale);
-  sky.appendChild(lantern);
+  const firefly = document.createElement('div');
+  firefly.className = 'firefly-el';
+  firefly.style.left = startX + 'px';
+  firefly.style.top = startY + 'px';
+  firefly.style.setProperty('--dur', dur + 's');
+  firefly.style.setProperty('--dx1', rndDx());
+  firefly.style.setProperty('--dy1', rndDy());
+  firefly.style.setProperty('--dx2', rndDx());
+  firefly.style.setProperty('--dy2', rndDy());
+  firefly.style.setProperty('--dx3', rndDx());
+  firefly.style.setProperty('--dy3', rndDy());
+  firefly.style.setProperty('--dx4', rndDx());
+  firefly.style.setProperty('--dy4', rndDy());
+  firefly.style.setProperty('--dx5', rndDx());
+  firefly.style.setProperty('--dy5', rndDy());
+  firefly.style.setProperty('--dx6', rndDx());
+  firefly.style.setProperty('--dy6', rndDy());
+  firefly.style.setProperty('--dx7', rndDx());
+  firefly.style.setProperty('--dy7', rndDy());
+  firefly.innerHTML = createFireflySVG(fireflySize);
+  sky.appendChild(firefly);
 
-  // 愿望气泡
   const wish = document.createElement('div');
-  wish.className = 'lantern-wish';
-  wish.textContent = lanternWishes[lanternCount % lanternWishes.length];
-  wish.style.left = randomX + 'px';
-  wish.style.top = (window.innerHeight * 0.65) + 'px';
-  wish.style.transform = 'translateX(-50%)';
+  wish.className = 'firefly-wish';
+  wish.textContent = starWishes[starCount % starWishes.length];
+  
+  let wishX, wishY;
+  let attempts = 0;
+  do {
+    wishX = Math.random() * (viewW * 0.8) + viewW * 0.1;
+    wishY = Math.random() * (viewH * 0.25) + viewH * 0.55;
+    attempts++;
+  } while (wishX > viewW - 150 && wishY > viewH - 100 && attempts < 10);
+  
+  wish.style.left = wishX + 'px';
+  wish.style.top = wishY + 'px';
   document.body.appendChild(wish);
 
-  lanternCount++;
-  document.getElementById('lantern-count').textContent = '已放飞 ' + lanternCount + ' 盏灯';
+  starCount++;
+  document.getElementById('lantern-count').textContent = '\u5DF2\u53EC\u5524 ' + starCount + ' \u53EA\u8424\u706B\u866B';
 
-  if (navigator.vibrate) navigator.vibrate(25);
+  if (navigator.vibrate) navigator.vibrate(20);
 
-  setTimeout(() => { lantern.remove(); wish.remove(); }, dur * 1000 + 500);
-  spawnMiniBurst(randomX, window.innerHeight * 0.7, 4);
+  setTimeout(() => { firefly.remove(); wish.remove(); }, dur * 1000 + 500);
+  
+  const burstContainer = document.getElementById('overlay-burst');
+  for (let i = 0; i < 5; i++) {
+    const p = document.createElement('span');
+    p.style.cssText = 'position:fixed;left:' + startX + 'px;top:' + startY + 'px;width:3px;height:3px;background:#80E040;border-radius:50%;pointer-events:none;z-index:2;animation:burstFly 1.5s ease-out forwards;';
+    p.style.setProperty('--bx', (Math.random() * 60 - 30) + 'px');
+    p.style.setProperty('--by', (Math.random() * -40 - 10) + 'px');
+    burstContainer.appendChild(p);
+    setTimeout(() => p.remove(), 1600);
+  }
 }
 
 // ===== 爱心雨 =====
@@ -1250,7 +1215,7 @@ function startHeartRain() {
 // ===== 结尾按钮 =====
 function finalBurst(e) {
   const btn = e.currentTarget;
-  btn.textContent = '浪漫至死';
+  btn.textContent = '浪漫至死不渝';
   btn.style.background = 'linear-gradient(135deg,var(--deep-wine),var(--burgundy))';
   bigBurst(e.clientX || window.innerWidth/2, e.clientY || window.innerHeight/2);
   spawnHeartParticles(e.clientX || window.innerWidth/2, e.clientY || window.innerHeight/2, 40);
@@ -1274,7 +1239,7 @@ function finalBurst(e) {
 
 // ===== 全局点击飘爱心 =====
 document.addEventListener('click', e => {
-  if (e.target.closest('button') || e.target.closest('.poem-flip') || e.target.closest('.heart-btn') || e.target.closest('.lantern-tap-area')) return;
+  if (e.target.closest('button') || e.target.closest('.poem-flip') || e.target.closest('.heart-btn') || e.target.closest('.firefly-tap-area')) return;
 
   const container = document.getElementById('float-hearts');
   const heart = document.createElement('span');
@@ -1291,64 +1256,50 @@ document.addEventListener('click', e => {
 });
 
 // ===== 音乐：Hexmaloo - Love Me Harder =====
-let audio = null, musicPlaying = false;
-let musicUserPaused = false; // 用户是否主动暂停过音乐
+let audio = null;
+let musicPlaying = false;
 const musicBtn = document.getElementById('music-btn');
 
-// 初始化音频并立即播放
-function initAndPlay() {
+// 初始化音频
+function initAudio() {
   audio = new Audio();
   audio.src = 'bgm.mp3';
   audio.loop = true;
   audio.volume = 0.5;
   audio.preload = 'auto';
-  audio.play().then(() => {
+  
+  // 监听音频状态变化，立即更新UI
+  audio.addEventListener('play', () => {
     musicPlaying = true;
-    updateMusicBtn();
-  }).catch(() => {
-    // 浏览器阻止自动播放，等用户交互
+    musicBtn.classList.add('playing');
+    // 播放中 → 显示当前状态：音乐 开
+    musicBtn.innerHTML = `<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg><span>音乐 开</span>`;
+  });
+  
+  audio.addEventListener('pause', () => {
     musicPlaying = false;
-    updateMusicBtn();
+    musicBtn.classList.remove('playing');
+    // 暂停中 → 显示当前状态：音乐 关
+    musicBtn.innerHTML = `<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><span>音乐 关</span>`;
+  });
+  
+  // 尝试自动播放
+  audio.play().catch(() => {
+    musicPlaying = false;
   });
 }
 
-// 页面加载后立即尝试播放
-initAndPlay();
+// 页面加载后初始化
+initAudio();
 
-// 如果首次播放被阻止，用户任意点击后重试（但不包括用户主动暂停的情况）
-document.addEventListener('click', function retryPlay() {
-  if (!musicPlaying && audio && audio.paused && !musicUserPaused) {
-    audio.play().then(() => {
-      musicPlaying = true;
-      musicUserPaused = false;
-      updateMusicBtn();
-    }).catch(() => {});
-  }
-}, { once: false });
-
-function updateMusicBtn() {
-  if (musicPlaying) {
-    musicBtn.classList.add('playing');
-    musicBtn.innerHTML = `<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><span>静音</span>`;
-  } else {
-    musicBtn.classList.remove('playing');
-    musicBtn.innerHTML = `<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg><span>音乐</span>`;
-  }
-}
-
+// 切换音乐播放状态 - 立即响应
 function toggleMusic() {
   if (!audio) return;
-  if (musicPlaying) {
-    audio.pause();
-    musicPlaying = false;
-    musicUserPaused = true; // 标记为用户主动暂停
-    updateMusicBtn();
+  
+  if (audio.paused) {
+    audio.play().catch(() => {});
   } else {
-    audio.play().then(() => {
-      musicPlaying = true;
-      musicUserPaused = false; // 用户主动恢复，清除暂停标记
-      updateMusicBtn();
-    }).catch(() => {});
+    audio.pause();
   }
 }
 
