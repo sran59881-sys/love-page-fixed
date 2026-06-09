@@ -562,6 +562,21 @@ body:hover #cursor-glow{opacity:1;}
   margin-right:5px;
   color:rgba(212,165,116,0.4);
 }
+/* 居中中文"我爱你"特殊样式 */
+.love-wall-item.center-love{
+  width:100%;
+  text-align:center;
+  font-size:50px;
+  font-weight:600;
+  color:rgba(245,230,208,0.95);
+  text-shadow:0 0 20px rgba(212,165,116,0.5),0 0 40px rgba(212,165,116,0.2);
+  letter-spacing:8px;
+  margin:0.5rem 0;
+}
+.love-wall-item.center-love::before{
+  content:'';
+  margin-right:0;
+}
 @keyframes loveWallItemIn{
   0%{opacity:0;transform:scale(0.4);filter:blur(3px);}
   50%{opacity:0.6;filter:blur(0.5px);}
@@ -1411,23 +1426,28 @@ function releaseFirefly(e) {
   firefly.innerHTML = createFireflySVG(fireflySize);
   sky.appendChild(firefly);
 
-  const wish = document.createElement('div');
-  wish.className = 'firefly-wish';
-  wish.textContent = starWishes[starCount % starWishes.length];
-  
-  let wishX = Math.random() * (viewW * 0.75) + viewW * 0.1 + rect.left;
-  let wishY = Math.random() * (viewH * 0.3) + viewH * 0.5 + rect.top;
-  
-  wish.style.left = wishX + 'px';
-  wish.style.top = wishY + 'px';
-  document.body.appendChild(wish);
+  // 每4只才出祝福词
+  if (starCount % 4 === 1) {
+    const wish = document.createElement('div');
+    wish.className = 'firefly-wish';
+    wish.textContent = starWishes[Math.floor(starCount / 4) % starWishes.length];
+
+    // 祝福词只在上方区域，避开中间按钮位置
+    let wishX = Math.random() * (viewW * 0.7) + viewW * 0.1 + rect.left;
+    let wishY = Math.random() * (viewH * 0.25) + viewH * 0.05 + rect.top;
+
+    wish.style.left = wishX + 'px';
+    wish.style.top = wishY + 'px';
+    document.body.appendChild(wish);
+    setTimeout(() => { wish.remove(); }, dur * 1000 + 500);
+  }
 
   starCount++;
   document.getElementById('lantern-count').textContent = '\u5DF2\u53EC\u5524 ' + starCount + ' \u53EA\u8424\u706B\u866B';
 
   if (navigator.vibrate) navigator.vibrate(20);
 
-  setTimeout(() => { firefly.remove(); wish.remove(); }, dur * 1000 + 500);
+  setTimeout(() => { firefly.remove(); }, dur * 1000 + 500);
   
   // 金色粒子爆发
   const burstContainer = document.getElementById('overlay-burst');
@@ -1596,20 +1616,170 @@ function showLoveWall() {
   if (desc) { desc.style.transition = 'opacity 2s ease'; desc.style.opacity = '0'; }
   if (count) { count.textContent = '✦ 所有萤火虫汇聚成了告白墙 ✦'; count.style.letterSpacing = '2px'; }
 
-  // 填充100国"我爱你" — 恰到好处的间隔
-  loveInLanguages.forEach((item, i) => {
+  // 60国"我爱你"排列：中文居中，著名国家靠近中心
+  // 按知名度排序的60个国家索引（最著名的在前，靠近中文）
+  const famousOrder = [
+    0,   // 中文 我爱你
+    1,   // English - I love you
+    2,   // 日本語 - 愛してる
+    4,   // Русский - Я люблю тебя
+    5,   // Français - Je t'aime
+    6,   // Deutsch - Ich liebe dich
+    7,   // Español - Te amo
+    8,   // Italiano - Ti amo
+    9,   // Português - Eu te amo
+    10,  // العربية - أحبك
+    11,  // हिन्दी
+    3,   // 한국어 - 사랑해
+    12,  // ภาษาไทย
+    13,  // Tiếng Việt
+    14,  // Indonesia
+    16,  // Filipino
+    31,  // Türkçe
+    32,  // עברית
+    33,  // فارسی
+    30,  // Ελληνικά
+    22,  // Polski
+    23,  // Čeština
+    29,  // Română
+    17,  // Nederlands
+    18,  // Svenska
+    21,  // Dansk
+    19,  // Norsk
+    20,  // Suomi
+    34,  // Українська
+    24,  // Slovenčina
+    27,  // Hrvatski
+    26,  // Slovenščina
+    35,  // Беларуская
+    28,  // Српски
+    36,  // ქართული
+    25,  // Български
+    37,  // Հայերեն
+    15,  // Melayu
+    40,  // Oʻzbekcha
+    39,  // Қазақша
+    38,  // Azərbaycan
+    41,  // Кыргызча
+    42,  // Тоҷикӣ
+    43,  // Монгол
+    44,  // தமிழ்
+    46,  // ಕನ್ನಡ
+    45,  // తెలుగు
+    47,  // മലയാളം
+    48,  // বাংলা
+    49,  // اردو
+    50,  // ਪੰਜਾਬੀ
+    51,  // සිංහල
+    52,  // ខ្មែរ
+    53,  // ລາວ
+    54,  // မြန်မာ
+    55,  // नेपाली
+    56,  // Català
+    57,  // Euskara
+    58,  // Galego
+    59,  // Gaeilge
+  ];
+
+  // 取前60个
+  const ordered = famousOrder.slice(0, 60);
+
+  // 中文是索引0，在最中间
+  // 布局：先用中文居中占一行，然后按距离中心由近到远排列
+  // 内圈（最著名）：前10个（除去中文），放中间附近行
+  // 中圈：11-30
+  // 外圈：31-59
+
+  // 将顺序重新组织：中文→内圈→中圈→外圈
+  const centerIdx = ordered.indexOf(0); // 0 is 中文
+  const innerCircle = ordered.filter((_, i) => i >= 1 && i <= 10);  // 最著名10国
+  const middleCircle = ordered.filter((_, i) => i >= 11 && i <= 30); // 中等20国
+  const outerCircle = ordered.filter((_, i) => i >= 31); // 其余29国
+
+  let delayIdx = 0;
+
+  // 中圈上方几行
+  middleCircle.slice(0, 10).forEach((langIdx) => {
+    const item = loveInLanguages[langIdx];
     const el = document.createElement('div');
     el.className = 'love-wall-item';
     el.textContent = item.phrase;
     el.title = item.lang;
-    // 逐个出现，间隔120ms，有呼吸感
-    el.style.animationDelay = (i * 0.12 + 0.5) + 's';
-    // INS风随机大小
-    const sizeVar = 9 + Math.random() * 5;
+    el.style.animationDelay = (delayIdx * 0.12 + 0.5) + 's';
+    const sizeVar = 9 + Math.random() * 4;
     el.style.fontSize = sizeVar + 'px';
-    // 随机间距，看起来更自然
-    el.style.margin = (2 + Math.random() * 4) + 'px ' + (3 + Math.random() * 8) + 'px';
+    el.style.margin = (3 + Math.random() * 5) + 'px ' + (5 + Math.random() * 10) + 'px';
     wall.appendChild(el);
+    delayIdx++;
+  });
+
+  // 内圈 — 最著名国家，紧贴中文
+  innerCircle.forEach((langIdx) => {
+    const item = loveInLanguages[langIdx];
+    const el = document.createElement('div');
+    el.className = 'love-wall-item';
+    el.textContent = item.phrase;
+    el.title = item.lang;
+    el.style.animationDelay = (delayIdx * 0.12 + 0.5) + 's';
+    const sizeVar = 11 + Math.random() * 4;
+    el.style.fontSize = sizeVar + 'px';
+    el.style.margin = (2 + Math.random() * 3) + 'px ' + (4 + Math.random() * 8) + 'px';
+    wall.appendChild(el);
+    delayIdx++;
+  });
+
+  // 中文 我爱你 — 居中大字
+  const centerEl = document.createElement('div');
+  centerEl.className = 'love-wall-item center-love';
+  centerEl.textContent = '我爱你';
+  centerEl.title = '中文';
+  centerEl.style.animationDelay = (delayIdx * 0.12 + 0.5) + 's';
+  wall.appendChild(centerEl);
+  delayIdx++;
+
+  // 内圈下半
+  innerCircle.slice(0, 5).forEach((langIdx) => {
+    const item = loveInLanguages[langIdx];
+    const el = document.createElement('div');
+    el.className = 'love-wall-item';
+    el.textContent = item.phrase;
+    el.title = item.lang;
+    el.style.animationDelay = (delayIdx * 0.12 + 0.5) + 's';
+    const sizeVar = 11 + Math.random() * 4;
+    el.style.fontSize = sizeVar + 'px';
+    el.style.margin = (2 + Math.random() * 3) + 'px ' + (4 + Math.random() * 8) + 'px';
+    wall.appendChild(el);
+    delayIdx++;
+  });
+
+  // 中圈下方几行
+  middleCircle.slice(10).forEach((langIdx) => {
+    const item = loveInLanguages[langIdx];
+    const el = document.createElement('div');
+    el.className = 'love-wall-item';
+    el.textContent = item.phrase;
+    el.title = item.lang;
+    el.style.animationDelay = (delayIdx * 0.12 + 0.5) + 's';
+    const sizeVar = 9 + Math.random() * 4;
+    el.style.fontSize = sizeVar + 'px';
+    el.style.margin = (3 + Math.random() * 5) + 'px ' + (5 + Math.random() * 10) + 'px';
+    wall.appendChild(el);
+    delayIdx++;
+  });
+
+  // 外圈
+  outerCircle.forEach((langIdx) => {
+    const item = loveInLanguages[langIdx];
+    const el = document.createElement('div');
+    el.className = 'love-wall-item';
+    el.textContent = item.phrase;
+    el.title = item.lang;
+    el.style.animationDelay = (delayIdx * 0.12 + 0.5) + 's';
+    const sizeVar = 8 + Math.random() * 3;
+    el.style.fontSize = sizeVar + 'px';
+    el.style.margin = (3 + Math.random() * 6) + 'px ' + (4 + Math.random() * 12) + 'px';
+    wall.appendChild(el);
+    delayIdx++;
   });
 
   // 触发显示
