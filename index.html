@@ -501,7 +501,7 @@ body:hover #cursor-glow{opacity:1;}
   font-weight:300;line-height:1.6;
   border:1px solid rgba(212,165,116,0.2);
   box-shadow:0 4px 20px rgba(212,165,116,0.08);
-  opacity:0;animation:showWish 0.7s cubic-bezier(0.4,0,0.2,1) 0.3s forwards;
+  opacity:0;animation:showWish 0.35s cubic-bezier(0.4,0,0.2,1) forwards;
   pointer-events:none;z-index:3;
 }
 @keyframes showWish{
@@ -541,9 +541,9 @@ body:hover #cursor-glow{opacity:1;}
 .love-wall-item{
   display:inline-flex;
   align-items:center;justify-content:center;
-  padding:8px 16px;
+  padding:10px 18px;
   font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
-  font-size:30px;
+  font-size:60px;
   color:rgba(232,201,160,0.72);
   white-space:nowrap;
   letter-spacing:0.8px;
@@ -566,7 +566,7 @@ body:hover #cursor-glow{opacity:1;}
 .love-wall-item.center-love{
   width:100%;
   text-align:center;
-  font-size:50px;
+  font-size:200px;
   font-weight:600;
   color:rgba(245,230,208,0.95);
   text-shadow:0 0 20px rgba(212,165,116,0.5),0 0 40px rgba(212,165,116,0.2);
@@ -1442,35 +1442,59 @@ function releaseFirefly(e) {
   firefly.innerHTML = createFireflySVG(fireflySize);
   sky.appendChild(firefly);
 
-  // 每4只才出祝福词，每句不重复，围绕按钮四周分布
+  // 每4只才出祝福词，每句不重复，围绕按钮四周+区域所有角落分布
   if (starCount % 4 === 1) {
     const wish = document.createElement('div');
     wish.className = 'firefly-wish';
     wish.textContent = starWishes[wishUsedIdx % starWishes.length];
     wishUsedIdx++;
 
-    // 获取按钮位置，围绕按钮四角分布
+    // 获取按钮位置和暗色区域范围
     const tapBtn = document.getElementById('star-tap');
     const btnRect = tapBtn.getBoundingClientRect();
     const btnCX = btnRect.left + btnRect.width / 2;
     const btnCY = btnRect.top + btnRect.height / 2;
-    const zone = wishUsedIdx % 4; // 0:左上 1:右上 2:左下 3:右下
-    let wishX, wishY;
-    const offsetMin = 90;
-    const offsetMax = 180;
-    if (zone === 0) { // 左上
-      wishX = btnCX - offsetMax + Math.random() * (offsetMax - offsetMin);
-      wishY = btnCY - offsetMax + Math.random() * (offsetMax - offsetMin);
-    } else if (zone === 1) { // 右上
-      wishX = btnCX + offsetMin + Math.random() * (offsetMax - offsetMin);
-      wishY = btnCY - offsetMax + Math.random() * (offsetMax - offsetMin);
-    } else if (zone === 2) { // 左下
-      wishX = btnCX - offsetMax + Math.random() * (offsetMax - offsetMin);
-      wishY = btnCY + offsetMin + Math.random() * (offsetMax - offsetMin);
-    } else { // 右下
-      wishX = btnCX + offsetMin + Math.random() * (offsetMax - offsetMin);
-      wishY = btnCY + offsetMin + Math.random() * (offsetMax - offsetMin);
+    const btnPad = 100; // 按钮周围安全距离
+
+    // 区域范围
+    const areaLeft = rect.left;
+    const areaTop = rect.top;
+    const areaRight = rect.right;
+    const areaBottom = rect.bottom;
+    const areaCX = (areaLeft + areaRight) / 2;
+    const areaCY = (areaTop + areaBottom) / 2;
+
+    // 9个区域：四角+四边+中心(排除按钮)，按轮转分配
+    const zones = [
+      // 四角
+      { xMin: areaLeft + 10, xMax: areaLeft + (areaRight - areaLeft) * 0.3, yMin: areaTop + 10, yMax: areaTop + (areaBottom - areaTop) * 0.3 },     // 左上角
+      { xMin: areaRight - (areaRight - areaLeft) * 0.3, xMax: areaRight - 10, yMin: areaTop + 10, yMax: areaTop + (areaBottom - areaTop) * 0.3 },  // 右上角
+      { xMin: areaLeft + 10, xMax: areaLeft + (areaRight - areaLeft) * 0.3, yMin: areaBottom - (areaBottom - areaTop) * 0.3, yMax: areaBottom - 10 }, // 左下角
+      { xMin: areaRight - (areaRight - areaLeft) * 0.3, xMax: areaRight - 10, yMin: areaBottom - (areaBottom - areaTop) * 0.3, yMax: areaBottom - 10 }, // 右下角
+      // 四边中段
+      { xMin: areaCX - 80, xMax: areaCX + 80, yMin: areaTop + 10, yMax: areaTop + (areaBottom - areaTop) * 0.22 },  // 上边
+      { xMin: areaCX - 80, xMax: areaCX + 80, yMin: areaBottom - (areaBottom - areaTop) * 0.22, yMax: areaBottom - 10 }, // 下边
+      { xMin: areaLeft + 10, xMax: areaLeft + (areaRight - areaLeft) * 0.2, yMin: areaCY - 60, yMax: areaCY + 60 }, // 左边
+      { xMin: areaRight - (areaRight - areaLeft) * 0.2, xMax: areaRight - 10, yMin: areaCY - 60, yMax: areaCY + 60 }, // 右边
+    ];
+
+    const zoneIdx = (wishUsedIdx - 1) % zones.length;
+    const zone = zones[zoneIdx];
+    let wishX = zone.xMin + Math.random() * (zone.xMax - zone.xMin);
+    let wishY = zone.yMin + Math.random() * (zone.yMax - zone.yMin);
+
+    // 确保不覆盖按钮区域
+    const wishW = 200, wishH = 50;
+    if (wishX + wishW > btnCX - btnPad && wishX < btnCX + btnPad &&
+        wishY + wishH > btnCY - btnPad && wishY < btnCY + btnPad) {
+      // 推到按钮上方或下方
+      if (wishY < btnCY) {
+        wishY = Math.min(wishY, btnCY - btnPad - wishH);
+      } else {
+        wishY = Math.max(wishY, btnCY + btnPad);
+      }
     }
+
     // 限制在视口范围内
     wishX = Math.max(10, Math.min(wishX, window.innerWidth - 210));
     wishY = Math.max(10, Math.min(wishY, window.innerHeight - 60));
@@ -1745,9 +1769,9 @@ function showLoveWall() {
     el.textContent = item.phrase;
     el.title = item.lang;
     el.style.animationDelay = (delayIdx * 0.12 + 0.5) + 's';
-    const sizeVar = 27 + Math.random() * 12;
+    const sizeVar = 48 + Math.random() * 20;
     el.style.fontSize = sizeVar + 'px';
-    el.style.margin = (5 + Math.random() * 8) + 'px ' + (8 + Math.random() * 14) + 'px';
+    el.style.margin = (8 + Math.random() * 10) + 'px ' + (12 + Math.random() * 18) + 'px';
     wall.appendChild(el);
     delayIdx++;
   });
@@ -1760,9 +1784,9 @@ function showLoveWall() {
     el.textContent = item.phrase;
     el.title = item.lang;
     el.style.animationDelay = (delayIdx * 0.12 + 0.5) + 's';
-    const sizeVar = 33 + Math.random() * 12;
+    const sizeVar = 60 + Math.random() * 20;
     el.style.fontSize = sizeVar + 'px';
-    el.style.margin = (4 + Math.random() * 6) + 'px ' + (6 + Math.random() * 10) + 'px';
+    el.style.margin = (6 + Math.random() * 8) + 'px ' + (10 + Math.random() * 14) + 'px';
     wall.appendChild(el);
     delayIdx++;
   });
@@ -1784,9 +1808,9 @@ function showLoveWall() {
     el.textContent = item.phrase;
     el.title = item.lang;
     el.style.animationDelay = (delayIdx * 0.12 + 0.5) + 's';
-    const sizeVar = 33 + Math.random() * 12;
+    const sizeVar = 60 + Math.random() * 20;
     el.style.fontSize = sizeVar + 'px';
-    el.style.margin = (4 + Math.random() * 6) + 'px ' + (6 + Math.random() * 10) + 'px';
+    el.style.margin = (6 + Math.random() * 8) + 'px ' + (10 + Math.random() * 14) + 'px';
     wall.appendChild(el);
     delayIdx++;
   });
@@ -1799,9 +1823,9 @@ function showLoveWall() {
     el.textContent = item.phrase;
     el.title = item.lang;
     el.style.animationDelay = (delayIdx * 0.12 + 0.5) + 's';
-    const sizeVar = 27 + Math.random() * 12;
+    const sizeVar = 48 + Math.random() * 20;
     el.style.fontSize = sizeVar + 'px';
-    el.style.margin = (5 + Math.random() * 8) + 'px ' + (8 + Math.random() * 14) + 'px';
+    el.style.margin = (8 + Math.random() * 10) + 'px ' + (12 + Math.random() * 18) + 'px';
     wall.appendChild(el);
     delayIdx++;
   });
@@ -1814,9 +1838,9 @@ function showLoveWall() {
     el.textContent = item.phrase;
     el.title = item.lang;
     el.style.animationDelay = (delayIdx * 0.12 + 0.5) + 's';
-    const sizeVar = 24 + Math.random() * 9;
+    const sizeVar = 40 + Math.random() * 18;
     el.style.fontSize = sizeVar + 'px';
-    el.style.margin = (5 + Math.random() * 8) + 'px ' + (6 + Math.random() * 14) + 'px';
+    el.style.margin = (8 + Math.random() * 10) + 'px ' + (10 + Math.random() * 18) + 'px';
     wall.appendChild(el);
     delayIdx++;
   });
