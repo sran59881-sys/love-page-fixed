@@ -529,36 +529,42 @@ body:hover #cursor-glow{opacity:1;}
 /* ===== 告白墙 ===== */
 .love-wall{
   position:absolute;top:0;left:0;right:0;bottom:0;
-  z-index:5;overflow:hidden;
+  z-index:5;overflow-y:auto;overflow-x:hidden;
   display:flex;flex-wrap:wrap;
-  align-content:flex-start;
-  padding:2rem 1.5rem;
+  align-content:center;justify-content:center;
+  padding:2.5rem 2rem;
   opacity:0;
+  pointer-events:none;
   transition:opacity 2s ease;
 }
-.love-wall.visible{opacity:1;}
+.love-wall.visible{opacity:1;pointer-events:auto;}
 .love-wall-item{
   display:inline-flex;
   align-items:center;justify-content:center;
-  padding:3px 8px;
-  font-family:'Noto Serif SC',Georgia,serif;
-  font-size:9px;
-  color:rgba(232,201,160,0.65);
+  padding:4px 10px;
+  font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+  font-size:10px;
+  color:rgba(232,201,160,0.72);
   white-space:nowrap;
-  letter-spacing:0.5px;
+  letter-spacing:0.8px;
   opacity:0;
   transform:scale(0.7);
-  animation:loveWallItemIn 1.8s ease-out forwards;
+  animation:loveWallItemIn 2s ease-out forwards;
+  transition:text-shadow 0.3s;
+}
+.love-wall-item:hover{
+  text-shadow:0 0 12px rgba(212,165,116,0.5);
+  color:rgba(245,230,208,0.9);
 }
 .love-wall-item::before{
   content:'✦';
   font-size:5px;
-  margin-right:4px;
-  color:rgba(212,165,116,0.35);
+  margin-right:5px;
+  color:rgba(212,165,116,0.4);
 }
 @keyframes loveWallItemIn{
-  0%{opacity:0;transform:scale(0.5);filter:blur(2px);}
-  60%{opacity:0.8;filter:blur(0);}
+  0%{opacity:0;transform:scale(0.4);filter:blur(3px);}
+  50%{opacity:0.6;filter:blur(0.5px);}
   100%{opacity:1;transform:scale(1);filter:blur(0);}
 }
 
@@ -1513,127 +1519,62 @@ document.addEventListener('click', e => {
   setTimeout(() => heart.remove(), 7000);
 });
 
-// ===== 音乐：Web Audio API 浪漫钢琴氛围 =====
-let audioCtx = null;
+// ===== 音乐：Hexmaloo - Love Me Harder =====
+let audio = null;
 let musicPlaying = false;
-let musicGain = null;
-let musicIntervals = [];
 const musicBtn = document.getElementById('music-btn');
 
-// 浪漫和弦进行: Cmaj7 → Am7 → Fmaj7 → Gsus4
-const chordProgressions = [
-  [261.63, 329.63, 392.00, 493.88],  // Cmaj7
-  [220.00, 261.63, 329.63, 392.00],  // Am7
-  [174.61, 220.00, 261.63, 329.63],  // Fmaj7
-  [196.00, 246.94, 293.66, 392.00],  // Gsus4
-];
-
-function playNote(freq, startTime, duration) {
-  if (!audioCtx || !musicGain) return;
-  // 主音
-  const osc = audioCtx.createOscillator();
-  const noteGain = audioCtx.createGain();
-  osc.type = 'sine';
-  osc.frequency.value = freq;
-  noteGain.gain.setValueAtTime(0, startTime);
-  noteGain.gain.linearRampToValueAtTime(0.035, startTime + 0.15);
-  noteGain.gain.linearRampToValueAtTime(0.025, startTime + duration * 0.6);
-  noteGain.gain.linearRampToValueAtTime(0, startTime + duration);
-  osc.connect(noteGain);
-  noteGain.connect(musicGain);
-  osc.start(startTime);
-  osc.stop(startTime + duration + 0.1);
-
-  // 泛音
-  const osc2 = audioCtx.createOscillator();
-  const noteGain2 = audioCtx.createGain();
-  osc2.type = 'sine';
-  osc2.frequency.value = freq * 2;
-  noteGain2.gain.setValueAtTime(0, startTime);
-  noteGain2.gain.linearRampToValueAtTime(0.012, startTime + 0.1);
-  noteGain2.gain.linearRampToValueAtTime(0, startTime + duration * 0.7);
-  osc2.connect(noteGain2);
-  noteGain2.connect(musicGain);
-  osc2.start(startTime);
-  osc2.stop(startTime + duration + 0.1);
-}
-
-function playChordProgression() {
-  if (!audioCtx || !musicPlaying) return;
-  const now = audioCtx.currentTime;
-  const chordDur = 4.5;
+function initAudio() {
+  audio = new Audio();
+  audio.src = 'bgm.ogg';
+  audio.loop = true;
+  audio.volume = 0.55;
+  audio.preload = 'auto';
   
-  chordProgressions.forEach((chord, ci) => {
-    const chordStart = now + ci * chordDur;
-    // 和弦音
-    chord.forEach((freq, ni) => {
-      playNote(freq, chordStart + ni * 0.12, chordDur * 1.2);
-    });
-    // 分解音
-    chord.forEach((freq, ni) => {
-      playNote(freq * 0.5, chordStart + chordDur * 0.5 + ni * 0.15, chordDur * 0.8);
-    });
+  audio.addEventListener('play', () => {
+    musicPlaying = true;
+    musicBtn.classList.add('playing');
+    musicBtn.innerHTML = '<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg><span>暂停</span>';
+  });
+  
+  audio.addEventListener('pause', () => {
+    musicPlaying = false;
+    musicBtn.classList.remove('playing');
+    musicBtn.innerHTML = '<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><span>播放</span>';
+  });
+  
+  audio.addEventListener('error', () => {
+    console.warn('Music load failed, trying alternate path...');
+    // Try GitHub raw URL as fallback
+    audio.src = 'https://raw.githubusercontent.com/sran59881-sys/love-page-fixed/main/bgm.ogg';
+    audio.play().catch(() => {});
+  });
+  
+  // Auto-play on load
+  audio.play().catch(() => {
+    // Browser blocked autoplay — try on first user interaction
+    const tryPlay = () => {
+      if (!musicPlaying) {
+        audio.play().catch(() => {});
+      }
+      document.removeEventListener('click', tryPlay);
+      document.removeEventListener('touchstart', tryPlay);
+      document.removeEventListener('scroll', tryPlay);
+    };
+    document.addEventListener('click', tryPlay, { once: false });
+    document.addEventListener('touchstart', tryPlay, { once: false });
+    document.addEventListener('scroll', tryPlay, { once: true });
   });
 }
 
-function startMusic() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    musicGain = audioCtx.createGain();
-    musicGain.gain.value = 0.6;
-    
-    // 混响效果
-    const convolver = audioCtx.createConvolver();
-    const rate = audioCtx.sampleRate;
-    const length = rate * 2.5;
-    const impulse = audioCtx.createBuffer(2, length, rate);
-    for (let ch = 0; ch < 2; ch++) {
-      const data = impulse.getChannelData(ch);
-      for (let i = 0; i < length; i++) {
-        data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 2.5);
-      }
-    }
-    convolver.buffer = impulse;
-    
-    const dryGain = audioCtx.createGain();
-    dryGain.gain.value = 0.7;
-    const wetGain = audioCtx.createGain();
-    wetGain.gain.value = 0.3;
-    
-    musicGain.connect(dryGain);
-    musicGain.connect(convolver);
-    convolver.connect(wetGain);
-    dryGain.connect(audioCtx.destination);
-    wetGain.connect(audioCtx.destination);
-  }
-  
-  if (audioCtx.state === 'suspended') audioCtx.resume();
-  musicPlaying = true;
-  playChordProgression();
-  
-  // 循环播放
-  const loopId = setInterval(() => {
-    if (musicPlaying) playChordProgression();
-  }, 18000);
-  musicIntervals.push(loopId);
-  
-  musicBtn.classList.add('playing');
-  musicBtn.innerHTML = '<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg><span>暂停</span>';
-}
-
-function stopMusic() {
-  musicPlaying = false;
-  musicIntervals.forEach(id => clearInterval(id));
-  musicIntervals = [];
-  musicBtn.classList.remove('playing');
-  musicBtn.innerHTML = '<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><span>播放</span>';
-}
+initAudio();
 
 function toggleMusic() {
-  if (musicPlaying) {
-    stopMusic();
+  if (!audio) return;
+  if (audio.paused) {
+    audio.play().catch(() => {});
   } else {
-    startMusic();
+    audio.pause();
   }
 }
 
@@ -1649,23 +1590,25 @@ function showLoveWall() {
   const desc = wall.parentElement.querySelector('p');
   const count = document.getElementById('lantern-count');
   
-  if (sky) sky.style.transition = 'opacity 2s ease';
-  if (sky) sky.style.opacity = '0.1';
-  if (tapArea) { tapArea.style.transition = 'opacity 1.5s ease'; tapArea.style.opacity = '0'; }
+  if (sky) { sky.style.transition = 'opacity 2s ease'; sky.style.opacity = '0.1'; }
+  if (tapArea) { tapArea.style.transition = 'opacity 1.5s ease'; tapArea.style.opacity = '0'; tapArea.style.pointerEvents = 'none'; }
   if (title) { title.style.transition = 'opacity 2s ease'; title.style.opacity = '0'; }
   if (desc) { desc.style.transition = 'opacity 2s ease'; desc.style.opacity = '0'; }
   if (count) { count.textContent = '✦ 所有萤火虫汇聚成了告白墙 ✦'; count.style.letterSpacing = '2px'; }
 
-  // 填充100国"我爱你"
+  // 填充100国"我爱你" — 恰到好处的间隔
   loveInLanguages.forEach((item, i) => {
     const el = document.createElement('div');
     el.className = 'love-wall-item';
     el.textContent = item.phrase;
     el.title = item.lang;
-    el.style.animationDelay = (i * 0.06 + 0.5) + 's';
-    // 随机化大小
-    const sizeVar = 8 + Math.random() * 5;
+    // 逐个出现，间隔120ms，有呼吸感
+    el.style.animationDelay = (i * 0.12 + 0.5) + 's';
+    // INS风随机大小
+    const sizeVar = 9 + Math.random() * 5;
     el.style.fontSize = sizeVar + 'px';
+    // 随机间距，看起来更自然
+    el.style.margin = (2 + Math.random() * 4) + 'px ' + (3 + Math.random() * 8) + 'px';
     wall.appendChild(el);
   });
 
