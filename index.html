@@ -435,34 +435,42 @@ body:hover #cursor-glow{opacity:1;}
   100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(0.2) rotate(var(--rot));}
 }
 
-/* ===== 第五屏：萤火心愿 ===== */
+/* ===== 第五屏：萤火心愿 — INS暖调风格 ===== */
 .firefly-section{
   min-height:100dvh;padding:4rem 1.5rem;
   position:relative;overflow:hidden;
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;
-  background:linear-gradient(180deg,#0d1a0d 0%,#0a1a12 30%,#0d1a0d 60%,#06120a 100%);
+  background:linear-gradient(170deg,#1a0f14 0%,#221218 20%,#1e1018 45%,#1a0e16 70%,#140c12 100%);
 }
 .firefly-section::before{
   content:'';position:absolute;top:0;left:0;right:0;bottom:0;
   background-image:
-    radial-gradient(1px 1px at 10% 80%,rgba(160,255,80,0.15),transparent),
-    radial-gradient(1px 1px at 30% 60%,rgba(160,255,80,0.1),transparent),
-    radial-gradient(1.5px 1.5px at 70% 30%,rgba(255,255,255,0.15),transparent),
-    radial-gradient(1px 1px at 85% 70%,rgba(160,255,80,0.12),transparent),
-    radial-gradient(1.5px 1.5px at 50% 20%,rgba(255,255,255,0.1),transparent),
-    radial-gradient(1px 1px at 20% 40%,rgba(255,255,255,0.08),transparent),
-    radial-gradient(1px 1px at 60% 75%,rgba(160,255,80,0.08),transparent),
-    radial-gradient(1px 1px at 90% 15%,rgba(255,255,255,0.1),transparent);
+    radial-gradient(1.2px 1.2px at 8% 75%,rgba(212,165,116,0.18),transparent),
+    radial-gradient(1px 1px at 25% 55%,rgba(232,201,160,0.12),transparent),
+    radial-gradient(1.5px 1.5px at 72% 28%,rgba(255,255,255,0.12),transparent),
+    radial-gradient(1px 1px at 88% 68%,rgba(212,165,116,0.14),transparent),
+    radial-gradient(1.3px 1.3px at 48% 18%,rgba(255,255,255,0.08),transparent),
+    radial-gradient(1px 1px at 18% 38%,rgba(255,255,255,0.06),transparent),
+    radial-gradient(1px 1px at 62% 72%,rgba(212,165,116,0.08),transparent),
+    radial-gradient(1px 1px at 92% 12%,rgba(255,255,255,0.08),transparent),
+    radial-gradient(1.2px 1.2px at 35% 88%,rgba(212,165,116,0.1),transparent),
+    radial-gradient(1px 1px at 55% 42%,rgba(255,255,255,0.05),transparent);
   pointer-events:none;z-index:0;
 }
 .firefly-section::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:28%;
-  background:linear-gradient(180deg,transparent 0%,rgba(6,18,10,0.5) 40%,rgba(4,14,4,0.8) 100%);
+  content:'';position:absolute;bottom:0;left:0;right:0;height:30%;
+  background:linear-gradient(180deg,transparent 0%,rgba(26,15,20,0.4) 40%,rgba(20,12,18,0.7) 100%);
   pointer-events:none;z-index:0;
 }
-.firefly-section .section-title{color:#E8FFD6 !important;}
-.firefly-section .section-title em{color:#80E040 !important;}
+/* 顶部暖光晕 */
+.firefly-section .warm-glow{
+  position:absolute;top:-15%;left:30%;width:40%;height:45%;
+  background:radial-gradient(ellipse,rgba(212,165,116,0.06) 0%,transparent 70%);
+  pointer-events:none;z-index:0;
+}
+.firefly-section .section-title{color:#F0DFC0 !important;}
+.firefly-section .section-title em{color:#D4A574 !important;}
 .firefly-sky{
   position:absolute;top:0;left:0;right:0;bottom:0;
   pointer-events:none;z-index:1;
@@ -482,17 +490,17 @@ body:hover #cursor-glow{opacity:1;}
   80%{opacity:0.6;transform:translate(var(--dx6),var(--dy6)) scale(0.9);}
   100%{opacity:0;transform:translate(var(--dx7),var(--dy7)) scale(0.2);}
 }
-.firefly-el svg{filter:drop-shadow(0 0 8px rgba(160,255,80,0.7)) drop-shadow(0 0 20px rgba(160,255,80,0.3));}
+.firefly-el svg{filter:drop-shadow(0 0 8px rgba(212,165,116,0.7)) drop-shadow(0 0 20px rgba(212,165,116,0.3));}
 .firefly-wish{
   position:fixed;
-  background:rgba(13,26,13,0.85);backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
+  background:rgba(26,15,20,0.88);backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
   padding:10px 20px;border-radius:24px;
-  font-size:0.78rem;color:#D0FFB0;
+  font-size:0.78rem;color:#E8D5B0;
   white-space:normal;max-width:200px;text-align:center;
   font-weight:300;line-height:1.6;
-  border:1px solid rgba(160,255,80,0.2);
-  box-shadow:0 4px 20px rgba(160,255,80,0.08);
+  border:1px solid rgba(212,165,116,0.2);
+  box-shadow:0 4px 20px rgba(212,165,116,0.08);
   opacity:0;animation:showWish 0.7s cubic-bezier(0.4,0,0.2,1) 0.3s forwards;
   pointer-events:none;z-index:3;
 }
@@ -502,21 +510,57 @@ body:hover #cursor-glow{opacity:1;}
 }
 .firefly-tap-area{
   width:160px;height:160px;border-radius:50%;
-  border:1.5px dashed rgba(160,255,80,0.25);
+  border:1.5px dashed rgba(212,165,116,0.25);
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;
   margin:2rem auto;cursor:pointer;
   transition:all 0.4s;position:relative;z-index:2;
-  background:rgba(13,26,13,0.4);
+  background:rgba(26,15,20,0.45);
 }
 .firefly-tap-area:hover{
-  border-color:rgba(160,255,80,0.5);
-  background:rgba(13,26,13,0.6);
+  border-color:rgba(212,165,116,0.5);
+  background:rgba(26,15,20,0.65);
   transform:scale(1.04);
-  box-shadow:0 0 40px rgba(160,255,80,0.15);
+  box-shadow:0 0 40px rgba(212,165,116,0.15);
 }
 .firefly-tap-area .tap-icon svg{width:40px;height:40px;}
-.firefly-tap-area .tap-text{font-size:0.78rem;color:#D0FFB0;letter-spacing:3px;font-weight:300;margin-top:0.6rem;}
+.firefly-tap-area .tap-text{font-size:0.78rem;color:#E8D5B0;letter-spacing:3px;font-weight:300;margin-top:0.6rem;}
+
+/* ===== 告白墙 ===== */
+.love-wall{
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  z-index:5;overflow:hidden;
+  display:flex;flex-wrap:wrap;
+  align-content:flex-start;
+  padding:2rem 1.5rem;
+  opacity:0;
+  transition:opacity 2s ease;
+}
+.love-wall.visible{opacity:1;}
+.love-wall-item{
+  display:inline-flex;
+  align-items:center;justify-content:center;
+  padding:3px 8px;
+  font-family:'Noto Serif SC',Georgia,serif;
+  font-size:9px;
+  color:rgba(232,201,160,0.65);
+  white-space:nowrap;
+  letter-spacing:0.5px;
+  opacity:0;
+  transform:scale(0.7);
+  animation:loveWallItemIn 1.8s ease-out forwards;
+}
+.love-wall-item::before{
+  content:'✦';
+  font-size:5px;
+  margin-right:4px;
+  color:rgba(212,165,116,0.35);
+}
+@keyframes loveWallItemIn{
+  0%{opacity:0;transform:scale(0.5);filter:blur(2px);}
+  60%{opacity:0.8;filter:blur(0);}
+  100%{opacity:1;transform:scale(1);filter:blur(0);}
+}
 
 /* ===== 第六屏：结尾 ===== */
 .ending-section{
@@ -666,10 +710,10 @@ body:hover #cursor-glow{opacity:1;}
 <!-- 我爱你星星容器 -->
 <div id="love-stars-container"></div>
 
-<!-- 音乐按钮：初始显示"音乐 开"，播放中显示"音乐 🔇" -->
+<!-- 音乐按钮 -->
 <button id="music-btn" onclick="toggleMusic()">
   <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-  <span>音乐 关</span>
+  <span>播放</span>
 </button>
 
 <!-- 特效层 -->
@@ -812,9 +856,11 @@ body:hover #cursor-glow{opacity:1;}
 
 <!-- ===== 第五屏：萤火心愿 ===== -->
 <section class="firefly-section page" id="lantern">
+  <div class="warm-glow"></div>
   <div class="firefly-sky" id="lantern-sky"></div>
+  <div class="love-wall" id="love-wall"></div>
   <h2 class="section-title" style="position:relative;z-index:2;">Make a <em>Wish</em></h2>
-  <p style="color:#E8D5A0;font-size:0.88rem;text-align:center;margin-bottom:1rem;position:relative;z-index:2;line-height:1.9;font-weight:300;">
+  <p style="color:#E8D5B0;font-size:0.88rem;text-align:center;margin-bottom:1rem;position:relative;z-index:2;line-height:1.9;font-weight:300;">
     轻轻召唤一只萤火虫，<br>每一只都载着一个关于你的愿望
   </p>
   <div class="firefly-tap-area" id="star-tap" onclick="releaseFirefly(event)">
@@ -822,18 +868,18 @@ body:hover #cursor-glow{opacity:1;}
       <svg viewBox="0 0 48 48" fill="none" width="44" height="44">
         <defs>
           <radialGradient id="tapFireflyGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#A8FF60"/>
-            <stop offset="30%" stop-color="#80E040"/>
-            <stop offset="70%" stop-color="rgba(160,255,80,0.3)"/>
-            <stop offset="100%" stop-color="rgba(160,255,80,0)"/>
+            <stop offset="0%" stop-color="#F0D8A0"/>
+            <stop offset="30%" stop-color="#D4A574"/>
+            <stop offset="70%" stop-color="rgba(212,165,116,0.3)"/>
+            <stop offset="100%" stop-color="rgba(212,165,116,0)"/>
           </radialGradient>
         </defs>
         <circle cx="24" cy="24" r="20" fill="url(#tapFireflyGlow)" opacity="0.5">
           <animate attributeName="r" values="20;23;20" dur="2s" repeatCount="indefinite"/>
           <animate attributeName="opacity" values="0.5;0.7;0.5" dur="1.6s" repeatCount="indefinite"/>
         </circle>
-        <ellipse cx="24" cy="26" rx="5" ry="7" fill="#3A2A10" opacity="0.7"/>
-        <ellipse cx="24" cy="20" rx="3.5" ry="4" fill="#80E040" opacity="0.9">
+        <ellipse cx="24" cy="26" rx="5" ry="7" fill="#2A1520" opacity="0.7"/>
+        <ellipse cx="24" cy="20" rx="3.5" ry="4" fill="#D4A574" opacity="0.9">
           <animate attributeName="opacity" values="0.9;1;0.7;1;0.9" dur="1.8s" repeatCount="indefinite"/>
           <animate attributeName="ry" values="4;4.5;3.5;4.5;4" dur="2.2s" repeatCount="indefinite"/>
         </ellipse>
@@ -1055,28 +1101,28 @@ function scheduleShootingStar() {
 }
 scheduleShootingStar();
 
-// ===== 萤火虫SVG =====
+// ===== 萤火虫SVG — 暖金色调 =====
 function createFireflySVG(size) {
   const uid = 'ff' + Math.random().toString(36).substr(2,6);
   return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 30 30" fill="none">' +
     '<defs>' +
       '<radialGradient id="fg' + uid + '" cx="50%" cy="45%" r="50%">' +
-        '<stop offset="0%" stop-color="#C8FF60"/>' +
-        '<stop offset="50%" stop-color="#80E040"/>' +
-        '<stop offset="100%" stop-color="rgba(128,224,64,0)"/>' +
+        '<stop offset="0%" stop-color="#FFF0D0"/>' +
+        '<stop offset="50%" stop-color="#D4A574"/>' +
+        '<stop offset="100%" stop-color="rgba(212,165,116,0)"/>' +
       '</radialGradient>' +
     '</defs>' +
     '<circle cx="15" cy="15" r="12" fill="url(#fg' + uid + ')" opacity="0.25">' +
       '<animate attributeName="r" values="12;14;12" dur="2s" repeatCount="indefinite"/>' +
       '<animate attributeName="opacity" values="0.25;0.4;0.25" dur="1.6s" repeatCount="indefinite"/>' +
     '</circle>' +
-    '<ellipse cx="15" cy="15" rx="3" ry="3.5" fill="#A0FF50" opacity="0.9">' +
+    '<ellipse cx="15" cy="15" rx="3" ry="3.5" fill="#F0D8A0" opacity="0.9">' +
       '<animate attributeName="opacity" values="0.9;0.4;1;0.5;0.9" dur="2.5s" repeatCount="indefinite"/>' +
       '<animate attributeName="ry" values="3.5;4;3;3.5" dur="1.8s" repeatCount="indefinite"/>' +
     '</ellipse>' +
-    '<ellipse cx="15" cy="20" rx="2" ry="4" fill="#3A2A10" opacity="0.6"/>' +
-    '<line x1="13" y1="23" x2="11" y2="28" stroke="#3A2A10" stroke-width="0.5" opacity="0.4"/>' +
-    '<line x1="17" y1="23" x2="19" y2="28" stroke="#3A2A10" stroke-width="0.5" opacity="0.4"/>' +
+    '<ellipse cx="15" cy="20" rx="2" ry="4" fill="#2A1520" opacity="0.6"/>' +
+    '<line x1="13" y1="23" x2="11" y2="28" stroke="#2A1520" stroke-width="0.5" opacity="0.4"/>' +
+    '<line x1="17" y1="23" x2="19" y2="28" stroke="#2A1520" stroke-width="0.5" opacity="0.4"/>' +
   '</svg>';
 }
 
@@ -1323,15 +1369,19 @@ function releaseFirefly(e) {
   const sky = document.getElementById('lantern-sky');
   starUID++;
 
-  const viewW = window.innerWidth;
-  const viewH = window.innerHeight;
-  const startX = Math.random() * (viewW * 0.6) + viewW * 0.2;
-  const startY = Math.random() * (viewH * 0.4) + viewH * 0.3;
-  const dur = (Math.random() * 6 + 10);
-  const fireflySize = Math.random() * 8 + 14;
+  const section = document.getElementById('lantern');
+  const rect = section.getBoundingClientRect();
+  const viewW = rect.width;
+  const viewH = rect.height;
 
-  function rndDx() { return (Math.random() * 120 - 60) + 'px'; }
-  function rndDy() { return (Math.random() * 100 - 50) + 'px'; }
+  // 覆盖整个区域，更分散
+  const startX = Math.random() * (viewW * 0.85) + viewW * 0.075;
+  const startY = Math.random() * (viewH * 0.85) + viewH * 0.075;
+  const dur = (Math.random() * 8 + 10);
+  const fireflySize = Math.random() * 10 + 12;
+
+  function rndDx() { return (Math.random() * 160 - 80) + 'px'; }
+  function rndDy() { return (Math.random() * 140 - 70) + 'px'; }
 
   const firefly = document.createElement('div');
   firefly.className = 'firefly-el';
@@ -1359,13 +1409,8 @@ function releaseFirefly(e) {
   wish.className = 'firefly-wish';
   wish.textContent = starWishes[starCount % starWishes.length];
   
-  let wishX, wishY;
-  let attempts = 0;
-  do {
-    wishX = Math.random() * (viewW * 0.8) + viewW * 0.1;
-    wishY = Math.random() * (viewH * 0.25) + viewH * 0.55;
-    attempts++;
-  } while (wishX > viewW - 150 && wishY > viewH - 100 && attempts < 10);
+  let wishX = Math.random() * (viewW * 0.75) + viewW * 0.1 + rect.left;
+  let wishY = Math.random() * (viewH * 0.3) + viewH * 0.5 + rect.top;
   
   wish.style.left = wishX + 'px';
   wish.style.top = wishY + 'px';
@@ -1378,14 +1423,20 @@ function releaseFirefly(e) {
 
   setTimeout(() => { firefly.remove(); wish.remove(); }, dur * 1000 + 500);
   
+  // 金色粒子爆发
   const burstContainer = document.getElementById('overlay-burst');
   for (let i = 0; i < 5; i++) {
     const p = document.createElement('span');
-    p.style.cssText = 'position:fixed;left:' + startX + 'px;top:' + startY + 'px;width:3px;height:3px;background:#80E040;border-radius:50%;pointer-events:none;z-index:2;animation:burstFly 1.5s ease-out forwards;';
+    p.style.cssText = 'position:fixed;left:' + (startX + rect.left) + 'px;top:' + (startY + rect.top) + 'px;width:3px;height:3px;background:#D4A574;border-radius:50%;pointer-events:none;z-index:2;animation:burstFly 1.5s ease-out forwards;';
     p.style.setProperty('--bx', (Math.random() * 60 - 30) + 'px');
     p.style.setProperty('--by', (Math.random() * -40 - 10) + 'px');
     burstContainer.appendChild(p);
     setTimeout(() => p.remove(), 1600);
+  }
+
+  // 第101只萤火虫 → 触发告白墙
+  if (starCount === 101) {
+    showLoveWall();
   }
 }
 
@@ -1462,45 +1513,166 @@ document.addEventListener('click', e => {
   setTimeout(() => heart.remove(), 7000);
 });
 
-// ===== 音乐：Hexmaloo - Love Me Harder =====
-let audio = null;
+// ===== 音乐：Web Audio API 浪漫钢琴氛围 =====
+let audioCtx = null;
 let musicPlaying = false;
+let musicGain = null;
+let musicIntervals = [];
 const musicBtn = document.getElementById('music-btn');
 
-function initAudio() {
-  audio = new Audio();
-  audio.src = 'bgm.mp3';
-  audio.loop = true;
-  audio.volume = 0.5;
-  audio.preload = 'auto';
+// 浪漫和弦进行: Cmaj7 → Am7 → Fmaj7 → Gsus4
+const chordProgressions = [
+  [261.63, 329.63, 392.00, 493.88],  // Cmaj7
+  [220.00, 261.63, 329.63, 392.00],  // Am7
+  [174.61, 220.00, 261.63, 329.63],  // Fmaj7
+  [196.00, 246.94, 293.66, 392.00],  // Gsus4
+];
+
+function playNote(freq, startTime, duration) {
+  if (!audioCtx || !musicGain) return;
+  // 主音
+  const osc = audioCtx.createOscillator();
+  const noteGain = audioCtx.createGain();
+  osc.type = 'sine';
+  osc.frequency.value = freq;
+  noteGain.gain.setValueAtTime(0, startTime);
+  noteGain.gain.linearRampToValueAtTime(0.035, startTime + 0.15);
+  noteGain.gain.linearRampToValueAtTime(0.025, startTime + duration * 0.6);
+  noteGain.gain.linearRampToValueAtTime(0, startTime + duration);
+  osc.connect(noteGain);
+  noteGain.connect(musicGain);
+  osc.start(startTime);
+  osc.stop(startTime + duration + 0.1);
+
+  // 泛音
+  const osc2 = audioCtx.createOscillator();
+  const noteGain2 = audioCtx.createGain();
+  osc2.type = 'sine';
+  osc2.frequency.value = freq * 2;
+  noteGain2.gain.setValueAtTime(0, startTime);
+  noteGain2.gain.linearRampToValueAtTime(0.012, startTime + 0.1);
+  noteGain2.gain.linearRampToValueAtTime(0, startTime + duration * 0.7);
+  osc2.connect(noteGain2);
+  noteGain2.connect(musicGain);
+  osc2.start(startTime);
+  osc2.stop(startTime + duration + 0.1);
+}
+
+function playChordProgression() {
+  if (!audioCtx || !musicPlaying) return;
+  const now = audioCtx.currentTime;
+  const chordDur = 4.5;
   
-  audio.addEventListener('play', () => {
-    musicPlaying = true;
-    musicBtn.classList.add('playing');
-    musicBtn.innerHTML = `<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg><span>音乐 开</span>`;
-  });
-  
-  audio.addEventListener('pause', () => {
-    musicPlaying = false;
-    musicBtn.classList.remove('playing');
-    musicBtn.innerHTML = `<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><span>音乐 关</span>`;
-  });
-  
-  audio.play().catch(() => {
-    musicPlaying = false;
+  chordProgressions.forEach((chord, ci) => {
+    const chordStart = now + ci * chordDur;
+    // 和弦音
+    chord.forEach((freq, ni) => {
+      playNote(freq, chordStart + ni * 0.12, chordDur * 1.2);
+    });
+    // 分解音
+    chord.forEach((freq, ni) => {
+      playNote(freq * 0.5, chordStart + chordDur * 0.5 + ni * 0.15, chordDur * 0.8);
+    });
   });
 }
 
-initAudio();
+function startMusic() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    musicGain = audioCtx.createGain();
+    musicGain.gain.value = 0.6;
+    
+    // 混响效果
+    const convolver = audioCtx.createConvolver();
+    const rate = audioCtx.sampleRate;
+    const length = rate * 2.5;
+    const impulse = audioCtx.createBuffer(2, length, rate);
+    for (let ch = 0; ch < 2; ch++) {
+      const data = impulse.getChannelData(ch);
+      for (let i = 0; i < length; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 2.5);
+      }
+    }
+    convolver.buffer = impulse;
+    
+    const dryGain = audioCtx.createGain();
+    dryGain.gain.value = 0.7;
+    const wetGain = audioCtx.createGain();
+    wetGain.gain.value = 0.3;
+    
+    musicGain.connect(dryGain);
+    musicGain.connect(convolver);
+    convolver.connect(wetGain);
+    dryGain.connect(audioCtx.destination);
+    wetGain.connect(audioCtx.destination);
+  }
+  
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  musicPlaying = true;
+  playChordProgression();
+  
+  // 循环播放
+  const loopId = setInterval(() => {
+    if (musicPlaying) playChordProgression();
+  }, 18000);
+  musicIntervals.push(loopId);
+  
+  musicBtn.classList.add('playing');
+  musicBtn.innerHTML = '<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg><span>暂停</span>';
+}
+
+function stopMusic() {
+  musicPlaying = false;
+  musicIntervals.forEach(id => clearInterval(id));
+  musicIntervals = [];
+  musicBtn.classList.remove('playing');
+  musicBtn.innerHTML = '<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><span>播放</span>';
+}
 
 function toggleMusic() {
-  if (!audio) return;
-  
-  if (audio.paused) {
-    audio.play().catch(() => {});
+  if (musicPlaying) {
+    stopMusic();
   } else {
-    audio.pause();
+    startMusic();
   }
+}
+
+// ===== 告白墙 =====
+function showLoveWall() {
+  const wall = document.getElementById('love-wall');
+  if (!wall || wall.classList.contains('visible')) return;
+  
+  // 淡出萤火虫和按钮等
+  const sky = document.getElementById('lantern-sky');
+  const tapArea = document.getElementById('star-tap');
+  const title = wall.parentElement.querySelector('.section-title');
+  const desc = wall.parentElement.querySelector('p');
+  const count = document.getElementById('lantern-count');
+  
+  if (sky) sky.style.transition = 'opacity 2s ease';
+  if (sky) sky.style.opacity = '0.1';
+  if (tapArea) { tapArea.style.transition = 'opacity 1.5s ease'; tapArea.style.opacity = '0'; }
+  if (title) { title.style.transition = 'opacity 2s ease'; title.style.opacity = '0'; }
+  if (desc) { desc.style.transition = 'opacity 2s ease'; desc.style.opacity = '0'; }
+  if (count) { count.textContent = '✦ 所有萤火虫汇聚成了告白墙 ✦'; count.style.letterSpacing = '2px'; }
+
+  // 填充100国"我爱你"
+  loveInLanguages.forEach((item, i) => {
+    const el = document.createElement('div');
+    el.className = 'love-wall-item';
+    el.textContent = item.phrase;
+    el.title = item.lang;
+    el.style.animationDelay = (i * 0.06 + 0.5) + 's';
+    // 随机化大小
+    const sizeVar = 8 + Math.random() * 5;
+    el.style.fontSize = sizeVar + 'px';
+    wall.appendChild(el);
+  });
+
+  // 触发显示
+  setTimeout(() => { wall.classList.add('visible'); }, 300);
+
+  if (navigator.vibrate) navigator.vibrate([50, 30, 50, 30, 100]);
 }
 
 console.log('%c💌 小荣包，这里有个人很想你。','color:#5C2D3E; font-size:14px; font-weight:bold;');
