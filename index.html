@@ -1761,7 +1761,24 @@ function showLoveWall() {
 
   let delayIdx = 0;
 
-  // 中圈上方几行
+  // === 上半区：外圈 → 中圈 → 内圈（由远到近） ===
+
+  // 外圈上半
+  outerCircle.slice(0, 15).forEach((langIdx) => {
+    const item = loveInLanguages[langIdx];
+    const el = document.createElement('div');
+    el.className = 'love-wall-item';
+    el.textContent = item.phrase;
+    el.title = item.lang;
+    el.style.animationDelay = (delayIdx * 0.12 + 0.5) + 's';
+    const sizeVar = 8 + Math.random() * 3;
+    el.style.fontSize = sizeVar + 'px';
+    el.style.margin = (3 + Math.random() * 6) + 'px ' + (4 + Math.random() * 12) + 'px';
+    wall.appendChild(el);
+    delayIdx++;
+  });
+
+  // 中圈上方
   middleCircle.slice(0, 10).forEach((langIdx) => {
     const item = loveInLanguages[langIdx];
     const el = document.createElement('div');
@@ -1776,31 +1793,7 @@ function showLoveWall() {
     delayIdx++;
   });
 
-  // 内圈 — 最著名国家，紧贴中文
-  innerCircle.forEach((langIdx) => {
-    const item = loveInLanguages[langIdx];
-    const el = document.createElement('div');
-    el.className = 'love-wall-item';
-    el.textContent = item.phrase;
-    el.title = item.lang;
-    el.style.animationDelay = (delayIdx * 0.12 + 0.5) + 's';
-    const sizeVar = 11 + Math.random() * 4;
-    el.style.fontSize = sizeVar + 'px';
-    el.style.margin = (2 + Math.random() * 3) + 'px ' + (4 + Math.random() * 8) + 'px';
-    wall.appendChild(el);
-    delayIdx++;
-  });
-
-  // 中文 我爱你 — 居中大字
-  const centerEl = document.createElement('div');
-  centerEl.className = 'love-wall-item center-love';
-  centerEl.textContent = '我爱你';
-  centerEl.title = '中文';
-  centerEl.style.animationDelay = (delayIdx * 0.12 + 0.5) + 's';
-  wall.appendChild(centerEl);
-  delayIdx++;
-
-  // 内圈下半
+  // 内圈上半 — 最著名国家
   innerCircle.slice(0, 5).forEach((langIdx) => {
     const item = loveInLanguages[langIdx];
     const el = document.createElement('div');
@@ -1815,7 +1808,33 @@ function showLoveWall() {
     delayIdx++;
   });
 
-  // 中圈下方几行
+  // 中文 我爱你 — 正中间
+  const centerEl = document.createElement('div');
+  centerEl.className = 'love-wall-item center-love';
+  centerEl.textContent = '我爱你';
+  centerEl.title = '中文';
+  centerEl.style.animationDelay = (delayIdx * 0.12 + 0.5) + 's';
+  wall.appendChild(centerEl);
+  delayIdx++;
+
+  // === 下半区：内圈 → 中圈 → 外圈（由近到远） ===
+
+  // 内圈下半 — 最著名国家
+  innerCircle.slice(5).forEach((langIdx) => {
+    const item = loveInLanguages[langIdx];
+    const el = document.createElement('div');
+    el.className = 'love-wall-item';
+    el.textContent = item.phrase;
+    el.title = item.lang;
+    el.style.animationDelay = (delayIdx * 0.12 + 0.5) + 's';
+    const sizeVar = 11 + Math.random() * 4;
+    el.style.fontSize = sizeVar + 'px';
+    el.style.margin = (2 + Math.random() * 3) + 'px ' + (4 + Math.random() * 8) + 'px';
+    wall.appendChild(el);
+    delayIdx++;
+  });
+
+  // 中圈下方
   middleCircle.slice(10).forEach((langIdx) => {
     const item = loveInLanguages[langIdx];
     const el = document.createElement('div');
@@ -1830,8 +1849,8 @@ function showLoveWall() {
     delayIdx++;
   });
 
-  // 外圈
-  outerCircle.forEach((langIdx) => {
+  // 外圈下半
+  outerCircle.slice(15).forEach((langIdx) => {
     const item = loveInLanguages[langIdx];
     const el = document.createElement('div');
     el.className = 'love-wall-item';
