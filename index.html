@@ -541,9 +541,9 @@ body:hover #cursor-glow{opacity:1;}
 .love-wall-item{
   display:inline-flex;
   align-items:center;justify-content:center;
-  padding:4px 10px;
+  padding:8px 16px;
   font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
-  font-size:10px;
+  font-size:30px;
   color:rgba(232,201,160,0.72);
   white-space:nowrap;
   letter-spacing:0.8px;
@@ -917,7 +917,7 @@ body:hover #cursor-glow{opacity:1;}
 <section class="ending-section page" id="ending">
   <div class="ending-heart-rain" id="rain-container"></div>
   <div class="ending-content">
-    <h2 class="ending-title reveal">小荣包，我爱你</h2>
+    <h2 class="ending-title reveal">我爱你</h2>
     <div class="ending-poem reveal">
       "我从未奢望过永恒，<br>
       因为与你共度的每一秒，<br>
@@ -928,7 +928,7 @@ body:hover #cursor-glow{opacity:1;}
       不是房子，是一种笃定——<br>
       是你在外面被世界打碎以后，<br>
       回来有人接住你的那种笃定。<br><br>
-      小荣包，你愿意吗？
+      你愿意吗？
     </p>
     <div class="ending-cta reveal">
       <button onclick="finalBurst(event)">我愿意</button>
@@ -1383,8 +1383,24 @@ const starWishes = [
   "愿你每顿饭都有人陪，每个梦都有人听",
   "愿下辈子，我还是第一个找到你的人",
   "愿你所有的选择都通向幸福",
-  "愿你永远不必长大，在我这里可以做小孩"
+  "愿你永远不必长大，在我这里可以做小孩",
+  "愿你的笑容是我一生的信仰",
+  "愿你的每一份温柔都被珍惜",
+  "愿你在最疲惫的时候有人拥抱你",
+  "愿我们的爱比星辰更长久",
+  "愿你的每一天都被爱意包围",
+  "愿你的世界永远有光",
+  "愿你能一直做最真实的自己",
+  "愿你的每个夜晚都有美梦相伴",
+  "愿我的肩膀永远是你最想依靠的地方",
+  "愿你的生活比诗更浪漫",
+  "愿你的眼泪都被我擦干",
+  "愿你在每个冬天都有人暖手",
+  "愿你的勇敢都被温柔以待",
+  "愿我们的相遇是一场永不散场的电影",
+  "愿你的余生都是晴天"
 ];
+let wishUsedIdx = 0;
 
 function releaseFirefly(e) {
   const sky = document.getElementById('lantern-sky');
@@ -1426,15 +1442,38 @@ function releaseFirefly(e) {
   firefly.innerHTML = createFireflySVG(fireflySize);
   sky.appendChild(firefly);
 
-  // 每4只才出祝福词
+  // 每4只才出祝福词，每句不重复，围绕按钮四周分布
   if (starCount % 4 === 1) {
     const wish = document.createElement('div');
     wish.className = 'firefly-wish';
-    wish.textContent = starWishes[Math.floor(starCount / 4) % starWishes.length];
+    wish.textContent = starWishes[wishUsedIdx % starWishes.length];
+    wishUsedIdx++;
 
-    // 祝福词只在上方区域，避开中间按钮位置
-    let wishX = Math.random() * (viewW * 0.7) + viewW * 0.1 + rect.left;
-    let wishY = Math.random() * (viewH * 0.25) + viewH * 0.05 + rect.top;
+    // 获取按钮位置，围绕按钮四角分布
+    const tapBtn = document.getElementById('star-tap');
+    const btnRect = tapBtn.getBoundingClientRect();
+    const btnCX = btnRect.left + btnRect.width / 2;
+    const btnCY = btnRect.top + btnRect.height / 2;
+    const zone = wishUsedIdx % 4; // 0:左上 1:右上 2:左下 3:右下
+    let wishX, wishY;
+    const offsetMin = 90;
+    const offsetMax = 180;
+    if (zone === 0) { // 左上
+      wishX = btnCX - offsetMax + Math.random() * (offsetMax - offsetMin);
+      wishY = btnCY - offsetMax + Math.random() * (offsetMax - offsetMin);
+    } else if (zone === 1) { // 右上
+      wishX = btnCX + offsetMin + Math.random() * (offsetMax - offsetMin);
+      wishY = btnCY - offsetMax + Math.random() * (offsetMax - offsetMin);
+    } else if (zone === 2) { // 左下
+      wishX = btnCX - offsetMax + Math.random() * (offsetMax - offsetMin);
+      wishY = btnCY + offsetMin + Math.random() * (offsetMax - offsetMin);
+    } else { // 右下
+      wishX = btnCX + offsetMin + Math.random() * (offsetMax - offsetMin);
+      wishY = btnCY + offsetMin + Math.random() * (offsetMax - offsetMin);
+    }
+    // 限制在视口范围内
+    wishX = Math.max(10, Math.min(wishX, window.innerWidth - 210));
+    wishY = Math.max(10, Math.min(wishY, window.innerHeight - 60));
 
     wish.style.left = wishX + 'px';
     wish.style.top = wishY + 'px';
@@ -1499,7 +1538,7 @@ function startHeartRain() {
 // ===== 结尾按钮 =====
 function finalBurst(e) {
   const btn = e.currentTarget;
-  btn.textContent = '浪漫至死不渝';
+  btn.textContent = '浪漫至死';
   btn.style.background = 'linear-gradient(135deg,var(--deep-wine),var(--burgundy))';
   bigBurst(e.clientX || window.innerWidth/2, e.clientY || window.innerHeight/2);
   spawnHeartParticles(e.clientX || window.innerWidth/2, e.clientY || window.innerHeight/2, 40);
@@ -1706,9 +1745,9 @@ function showLoveWall() {
     el.textContent = item.phrase;
     el.title = item.lang;
     el.style.animationDelay = (delayIdx * 0.12 + 0.5) + 's';
-    const sizeVar = 9 + Math.random() * 4;
+    const sizeVar = 27 + Math.random() * 12;
     el.style.fontSize = sizeVar + 'px';
-    el.style.margin = (3 + Math.random() * 5) + 'px ' + (5 + Math.random() * 10) + 'px';
+    el.style.margin = (5 + Math.random() * 8) + 'px ' + (8 + Math.random() * 14) + 'px';
     wall.appendChild(el);
     delayIdx++;
   });
@@ -1721,9 +1760,9 @@ function showLoveWall() {
     el.textContent = item.phrase;
     el.title = item.lang;
     el.style.animationDelay = (delayIdx * 0.12 + 0.5) + 's';
-    const sizeVar = 11 + Math.random() * 4;
+    const sizeVar = 33 + Math.random() * 12;
     el.style.fontSize = sizeVar + 'px';
-    el.style.margin = (2 + Math.random() * 3) + 'px ' + (4 + Math.random() * 8) + 'px';
+    el.style.margin = (4 + Math.random() * 6) + 'px ' + (6 + Math.random() * 10) + 'px';
     wall.appendChild(el);
     delayIdx++;
   });
@@ -1745,9 +1784,9 @@ function showLoveWall() {
     el.textContent = item.phrase;
     el.title = item.lang;
     el.style.animationDelay = (delayIdx * 0.12 + 0.5) + 's';
-    const sizeVar = 11 + Math.random() * 4;
+    const sizeVar = 33 + Math.random() * 12;
     el.style.fontSize = sizeVar + 'px';
-    el.style.margin = (2 + Math.random() * 3) + 'px ' + (4 + Math.random() * 8) + 'px';
+    el.style.margin = (4 + Math.random() * 6) + 'px ' + (6 + Math.random() * 10) + 'px';
     wall.appendChild(el);
     delayIdx++;
   });
@@ -1760,9 +1799,9 @@ function showLoveWall() {
     el.textContent = item.phrase;
     el.title = item.lang;
     el.style.animationDelay = (delayIdx * 0.12 + 0.5) + 's';
-    const sizeVar = 9 + Math.random() * 4;
+    const sizeVar = 27 + Math.random() * 12;
     el.style.fontSize = sizeVar + 'px';
-    el.style.margin = (3 + Math.random() * 5) + 'px ' + (5 + Math.random() * 10) + 'px';
+    el.style.margin = (5 + Math.random() * 8) + 'px ' + (8 + Math.random() * 14) + 'px';
     wall.appendChild(el);
     delayIdx++;
   });
@@ -1775,9 +1814,9 @@ function showLoveWall() {
     el.textContent = item.phrase;
     el.title = item.lang;
     el.style.animationDelay = (delayIdx * 0.12 + 0.5) + 's';
-    const sizeVar = 8 + Math.random() * 3;
+    const sizeVar = 24 + Math.random() * 9;
     el.style.fontSize = sizeVar + 'px';
-    el.style.margin = (3 + Math.random() * 6) + 'px ' + (4 + Math.random() * 12) + 'px';
+    el.style.margin = (5 + Math.random() * 8) + 'px ' + (6 + Math.random() * 14) + 'px';
     wall.appendChild(el);
     delayIdx++;
   });
