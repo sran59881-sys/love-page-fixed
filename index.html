@@ -54,62 +54,61 @@ body{
   position:absolute;
   display:flex;flex-direction:column;
   align-items:center;
-  opacity:0;transform:scale(0.1);
-  filter:blur(4px);
+  opacity:0;transform:scale(0.08);
+  filter:blur(5px);
   animation:starGlowAppear var(--appear-dur,4s) ease-out forwards;
   will-change:transform,opacity,filter;
   pointer-events:none;
 }
 .love-star .star-dot{
-  width:var(--dot-size,5px);height:var(--dot-size,5px);
-  flex-shrink:0;
-  position:relative;
+  width:var(--dot-size,10px);height:var(--dot-size,10px);
+  flex-shrink:0;position:relative;
   animation:starPulse var(--pulse-dur,3s) ease-in-out infinite;
   animation-delay:var(--appear-dur,4s);
 }
 .love-star .star-dot svg{
   width:100%;height:100%;
-  filter:drop-shadow(0 0 3px var(--dot-glow,rgba(212,165,116,0.6))) drop-shadow(0 0 10px var(--dot-glow-outer,rgba(212,165,116,0.2)));
+  filter:drop-shadow(0 0 4px var(--dot-glow,rgba(212,165,116,0.7))) drop-shadow(0 0 12px var(--dot-glow-outer,rgba(212,165,116,0.25)));
 }
 .love-star .star-text{
   font-family:'Noto Serif SC',Georgia,serif;
-  font-size:var(--text-size,10px);
-  color:var(--text-color-val,rgba(180,145,100,0.7));
+  font-size:var(--text-size,9px);
+  color:var(--text-color-val,rgba(170,135,90,0.6));
   white-space:nowrap;
-  margin-top:5px;letter-spacing:0.3px;
-  text-shadow:0 0 8px var(--text-glow,rgba(212,165,116,0.25));
+  margin-top:4px;letter-spacing:0.3px;
+  text-shadow:0 0 6px var(--text-glow,rgba(212,165,116,0.2));
   opacity:0;
   animation:textReveal 2.5s ease-out forwards;
-  animation-delay:calc(var(--appear-dur,4s)*0.55);
+  animation-delay:calc(var(--appear-dur,4s)*0.6);
   max-width:110px;overflow:hidden;text-overflow:ellipsis;
   text-align:center;line-height:1.2;
 }
 
 @keyframes starGlowAppear{
-  0%{opacity:0;transform:scale(0.08);filter:blur(5px);}
-  6%{opacity:0.02;transform:scale(0.12);filter:blur(4px);}
-  15%{opacity:0.06;transform:scale(0.2);filter:blur(3.5px);}
-  25%{opacity:0.12;transform:scale(0.32);filter:blur(3px);}
-  38%{opacity:0.22;transform:scale(0.48);filter:blur(2px);}
-  52%{opacity:0.4;transform:scale(0.65);filter:blur(1px);}
-  68%{opacity:0.62;transform:scale(0.82);filter:blur(0.3px);}
-  82%{opacity:0.82;transform:scale(0.94);filter:blur(0);}
+  0%{opacity:0;transform:scale(0.06);filter:blur(6px);}
+  5%{opacity:0.015;transform:scale(0.1);filter:blur(5px);}
+  12%{opacity:0.04;transform:scale(0.16);filter:blur(4px);}
+  22%{opacity:0.1;transform:scale(0.28);filter:blur(3px);}
+  35%{opacity:0.2;transform:scale(0.45);filter:blur(2px);}
+  50%{opacity:0.38;transform:scale(0.62);filter:blur(1px);}
+  65%{opacity:0.58;transform:scale(0.8);filter:blur(0.3px);}
+  80%{opacity:0.8;transform:scale(0.94);filter:blur(0);}
   100%{opacity:1;transform:scale(1);filter:blur(0);}
 }
 @keyframes textReveal{
   0%{opacity:0;transform:translateY(3px);filter:blur(1px);}
-  40%{opacity:0.35;filter:blur(0);}
+  40%{opacity:0.4;filter:blur(0);}
   100%{opacity:1;transform:translateY(0);filter:blur(0);}
 }
 @keyframes starPulse{
   0%,100%{transform:scale(1);opacity:1;}
-  50%{transform:scale(1.15);opacity:0.85;}
+  50%{transform:scale(1.12);opacity:0.85;}
 }
 
-/* 流星 */
+/* 流星 — 金色 */
 .shooting-star{
   position:fixed;height:1px;
-  background:linear-gradient(90deg,rgba(212,165,116,0.5),rgba(232,201,160,0.2),transparent);
+  background:linear-gradient(90deg,rgba(212,165,116,0.6),rgba(232,201,160,0.25),transparent);
   pointer-events:none;z-index:0;opacity:0;
   animation:shootingStar 1.4s ease-out forwards;
 }
@@ -351,8 +350,8 @@ body:hover #cursor-glow{opacity:1;}
   .heart-btn .heart-svg{width:40px;height:36px;}
   .firefly-tap-area{width:140px;height:140px;}
   .hero-name{letter-spacing:8px;}
-  .love-star .star-text{font-size:8px;max-width:75px;}
-  .love-star .star-dot{--dot-size:6px;}
+  .love-star .star-text{font-size:7px;max-width:70px;}
+  .love-star .star-dot{--dot-size:7px;}
 }
 </style>
 <script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
@@ -588,18 +587,16 @@ const loveInLanguages = [
   { phrase: "Şumı xoram", lang: "Çävdşen" }, { phrase: "Melinyel", lang: "Quenya" },
 ];
 
-// ===== 星星色板 — 金黄暖色系匹配咖啡主题 =====
+// ===== 星星色板 — 金黄微光暖色系 =====
 const starPalettes = [
-  { fill:'#D4A574', glow:'rgba(212,165,116,0.6)', glowOuter:'rgba(212,165,116,0.18)', text:'rgba(180,145,100,0.65)' },
-  { fill:'#E8C9A0', glow:'rgba(232,201,160,0.55)', glowOuter:'rgba(232,201,160,0.15)', text:'rgba(195,165,120,0.6)' },
-  { fill:'#C8956E', glow:'rgba(200,149,110,0.6)', glowOuter:'rgba(200,149,110,0.18)', text:'rgba(170,130,90,0.65)' },
-  { fill:'#F0DFC0', glow:'rgba(240,223,192,0.5)', glowOuter:'rgba(240,223,192,0.12)', text:'rgba(200,180,140,0.6)' },
-  { fill:'#F5E6D0', glow:'rgba(245,230,208,0.5)', glowOuter:'rgba(245,230,208,0.1)', text:'rgba(210,185,145,0.55)' },
-  { fill:'#FFD700', glow:'rgba(255,215,0,0.4)', glowOuter:'rgba(255,215,0,0.1)', text:'rgba(200,170,100,0.6)' },
-  { fill:'#FFE4B5', glow:'rgba(255,228,181,0.45)', glowOuter:'rgba(255,228,181,0.1)', text:'rgba(195,170,130,0.55)' },
-  { fill:'#DAA520', glow:'rgba(218,165,32,0.45)', glowOuter:'rgba(218,165,32,0.1)', text:'rgba(185,145,70,0.6)' },
-  { fill:'#F5DEB3', glow:'rgba(245,222,179,0.45)', glowOuter:'rgba(245,222,179,0.1)', text:'rgba(200,175,130,0.55)' },
-  { fill:'#CD853F', glow:'rgba(205,133,63,0.5)', glowOuter:'rgba(205,133,63,0.12)', text:'rgba(175,125,70,0.6)' },
+  { fill:'#D4A574', glow:'rgba(212,165,116,0.7)', glowOuter:'rgba(212,165,116,0.25)', text:'rgba(170,135,90,0.6)' },
+  { fill:'#E8C9A0', glow:'rgba(232,201,160,0.6)', glowOuter:'rgba(232,201,160,0.2)', text:'rgba(185,155,110,0.55)' },
+  { fill:'#C8956E', glow:'rgba(200,149,110,0.65)', glowOuter:'rgba(200,149,110,0.22)', text:'rgba(160,125,80,0.6)' },
+  { fill:'#F0DFC0', glow:'rgba(240,223,192,0.55)', glowOuter:'rgba(240,223,192,0.18)', text:'rgba(190,170,130,0.55)' },
+  { fill:'#DAA520', glow:'rgba(218,165,32,0.5)', glowOuter:'rgba(218,165,32,0.15)', text:'rgba(175,140,65,0.55)' },
+  { fill:'#FFD700', glow:'rgba(255,215,0,0.45)', glowOuter:'rgba(255,215,0,0.12)', text:'rgba(190,160,85,0.55)' },
+  { fill:'#F5DEB3', glow:'rgba(245,222,179,0.5)', glowOuter:'rgba(245,222,179,0.15)', text:'rgba(190,165,120,0.5)' },
+  { fill:'#CD853F', glow:'rgba(205,133,63,0.55)', glowOuter:'rgba(205,133,63,0.18)', text:'rgba(165,120,60,0.55)' },
 ];
 
 // ===== 我爱你星星系统 =====
@@ -637,9 +634,9 @@ function getNextLangIndex() {
 function createLoveStar() {
   if (activeStars.length >= MAX_VISIBLE) {
     const oldest = activeStars.shift();
-    oldest.el.style.transition = 'opacity 2.5s ease';
+    oldest.el.style.transition = 'opacity 2s ease';
     oldest.el.style.opacity = '0';
-    setTimeout(() => oldest.el.remove(), 2700);
+    setTimeout(() => oldest.el.remove(), 2200);
     starQueue.push(oldest.langIdx);
   }
   const langIdx = getNextLangIndex();
@@ -661,20 +658,17 @@ function createLoveStar() {
   el.style.setProperty('--pulse-dur', pulseDur+'s');
   el.style.setProperty('--appear-dur', appearDur+'s');
 
-  // 创建尖锐星光SVG — 4角星光，优雅且高级
+  // 创建尖锐星光SVG — 4角星光✦ 尖锐优雅 金黄微光
   const dot = document.createElement('div'); dot.className = 'star-dot';
-  const starId = 'star'+Math.random().toString(36).substr(2,6);
+  const starId = 'sg'+Math.random().toString(36).substr(2,6);
   dot.innerHTML = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">'+
     '<defs><radialGradient id="'+starId+'" cx="50%" cy="50%" r="50%">'+
     '<stop offset="0%" stop-color="'+palette.fill+'" stop-opacity="1"/>'+
-    '<stop offset="40%" stop-color="'+palette.fill+'" stop-opacity="0.7"/>'+
+    '<stop offset="35%" stop-color="'+palette.fill+'" stop-opacity="0.6"/>'+
     '<stop offset="100%" stop-color="'+palette.fill+'" stop-opacity="0"/>'+
     '</radialGradient></defs>'+
-    // 外层柔和光晕
-    '<circle cx="12" cy="12" r="11" fill="url(#'+starId+')" opacity="0.3"/>'+
-    // 4角星光 — 尖锐优雅
-    '<path d="M12 2 L13.2 10.5 L22 12 L13.2 13.5 L12 22 L10.8 13.5 L2 12 L10.8 10.5 Z" fill="'+palette.fill+'" opacity="0.9"/>'+
-    // 中心亮点
+    '<circle cx="12" cy="12" r="11" fill="url(#'+starId+')" opacity="0.25"/>'+
+    '<path d="M12 2 L13.1 10.5 L22 12 L13.1 13.5 L12 22 L10.9 13.5 L2 12 L10.9 10.5 Z" fill="'+palette.fill+'" opacity="0.9"/>'+
     '<circle cx="12" cy="12" r="1.5" fill="#FFF8F0" opacity="0.95"/>'+
     '</svg>';
 
@@ -686,10 +680,10 @@ function createLoveStar() {
   const starData = { el, langIdx };
   activeStars.push(starData);
 
-  const aliveTime = 18000 + Math.random()*14000;
+  const aliveTime = 16000 + Math.random()*12000;
   setTimeout(() => {
-    el.style.transition = 'opacity 3s ease'; el.style.opacity = '0';
-    setTimeout(() => { el.remove(); activeStars = activeStars.filter(s => s !== starData); starQueue.push(langIdx); }, 3100);
+    el.style.transition = 'opacity 2.5s ease'; el.style.opacity = '0';
+    setTimeout(() => { el.remove(); activeStars = activeStars.filter(s => s !== starData); starQueue.push(langIdx); }, 2600);
   }, aliveTime);
 }
 
