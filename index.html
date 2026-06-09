@@ -49,64 +49,67 @@ body{
   overflow:hidden;
 }
 
-/* 单颗"我爱你"星星 */
+/* 单颗"我爱你"星星 — 金色尖锐星光 */
 .love-star{
   position:absolute;
   display:flex;flex-direction:column;
   align-items:center;
-  opacity:0;transform:scale(0.15);
-  filter:blur(3px);
+  opacity:0;transform:scale(0.1);
+  filter:blur(4px);
   animation:starGlowAppear var(--appear-dur,4s) ease-out forwards;
   will-change:transform,opacity,filter;
   pointer-events:none;
 }
 .love-star .star-dot{
-  width:var(--dot-size,4px);height:var(--dot-size,4px);
-  border-radius:50%;
-  background:var(--dot-color,#fff);
-  box-shadow:0 0 4px 1px var(--dot-glow,rgba(255,255,255,0.5)),0 0 14px 4px var(--dot-glow-outer,rgba(255,255,255,0.15));
+  width:var(--dot-size,5px);height:var(--dot-size,5px);
   flex-shrink:0;
+  position:relative;
   animation:starPulse var(--pulse-dur,3s) ease-in-out infinite;
   animation-delay:var(--appear-dur,4s);
+}
+.love-star .star-dot svg{
+  width:100%;height:100%;
+  filter:drop-shadow(0 0 3px var(--dot-glow,rgba(212,165,116,0.6))) drop-shadow(0 0 10px var(--dot-glow-outer,rgba(212,165,116,0.2)));
 }
 .love-star .star-text{
   font-family:'Noto Serif SC',Georgia,serif;
   font-size:var(--text-size,10px);
-  color:var(--text-color-val,rgba(255,255,255,0.7));
+  color:var(--text-color-val,rgba(180,145,100,0.7));
   white-space:nowrap;
-  margin-top:4px;letter-spacing:0.3px;
-  text-shadow:0 0 8px var(--text-glow,rgba(255,255,255,0.3));
+  margin-top:5px;letter-spacing:0.3px;
+  text-shadow:0 0 8px var(--text-glow,rgba(212,165,116,0.25));
   opacity:0;
   animation:textReveal 2.5s ease-out forwards;
-  animation-delay:calc(var(--appear-dur,4s)*0.6);
+  animation-delay:calc(var(--appear-dur,4s)*0.55);
   max-width:110px;overflow:hidden;text-overflow:ellipsis;
   text-align:center;line-height:1.2;
 }
 
 @keyframes starGlowAppear{
-  0%{opacity:0;transform:scale(0.15);filter:blur(4px);}
-  8%{opacity:0.04;transform:scale(0.2);filter:blur(3.5px);}
-  18%{opacity:0.1;transform:scale(0.3);filter:blur(3px);}
-  30%{opacity:0.2;transform:scale(0.45);filter:blur(2px);}
-  50%{opacity:0.45;transform:scale(0.65);filter:blur(1px);}
-  70%{opacity:0.7;transform:scale(0.85);filter:blur(0.3px);}
-  85%{opacity:0.88;transform:scale(0.95);filter:blur(0);}
+  0%{opacity:0;transform:scale(0.08);filter:blur(5px);}
+  6%{opacity:0.02;transform:scale(0.12);filter:blur(4px);}
+  15%{opacity:0.06;transform:scale(0.2);filter:blur(3.5px);}
+  25%{opacity:0.12;transform:scale(0.32);filter:blur(3px);}
+  38%{opacity:0.22;transform:scale(0.48);filter:blur(2px);}
+  52%{opacity:0.4;transform:scale(0.65);filter:blur(1px);}
+  68%{opacity:0.62;transform:scale(0.82);filter:blur(0.3px);}
+  82%{opacity:0.82;transform:scale(0.94);filter:blur(0);}
   100%{opacity:1;transform:scale(1);filter:blur(0);}
 }
 @keyframes textReveal{
   0%{opacity:0;transform:translateY(3px);filter:blur(1px);}
-  40%{opacity:0.4;filter:blur(0);}
+  40%{opacity:0.35;filter:blur(0);}
   100%{opacity:1;transform:translateY(0);filter:blur(0);}
 }
 @keyframes starPulse{
-  0%,100%{box-shadow:0 0 4px 1px var(--dot-glow,rgba(255,255,255,0.5)),0 0 14px 4px var(--dot-glow-outer,rgba(255,255,255,0.15));transform:scale(1);}
-  50%{box-shadow:0 0 7px 2px var(--dot-glow,rgba(255,255,255,0.7)),0 0 22px 7px var(--dot-glow-outer,rgba(255,255,255,0.22));transform:scale(1.18);}
+  0%,100%{transform:scale(1);opacity:1;}
+  50%{transform:scale(1.15);opacity:0.85;}
 }
 
 /* 流星 */
 .shooting-star{
   position:fixed;height:1px;
-  background:linear-gradient(90deg,rgba(255,255,255,0.6),transparent);
+  background:linear-gradient(90deg,rgba(212,165,116,0.5),rgba(232,201,160,0.2),transparent);
   pointer-events:none;z-index:0;opacity:0;
   animation:shootingStar 1.4s ease-out forwards;
 }
@@ -349,7 +352,7 @@ body:hover #cursor-glow{opacity:1;}
   .firefly-tap-area{width:140px;height:140px;}
   .hero-name{letter-spacing:8px;}
   .love-star .star-text{font-size:8px;max-width:75px;}
-  .love-star .star-dot{--dot-size:3px;}
+  .love-star .star-dot{--dot-size:6px;}
 }
 </style>
 <script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
@@ -585,16 +588,18 @@ const loveInLanguages = [
   { phrase: "Şumı xoram", lang: "Çävdşen" }, { phrase: "Melinyel", lang: "Quenya" },
 ];
 
-// ===== 星星色板 =====
+// ===== 星星色板 — 金黄暖色系匹配咖啡主题 =====
 const starPalettes = [
-  { dot:'#ffe4ec', glow:'rgba(255,190,210,0.5)', glowOuter:'rgba(232,160,181,0.12)', text:'rgba(255,200,215,0.6)' },
-  { dot:'#ffd4e8', glow:'rgba(255,140,190,0.5)', glowOuter:'rgba(255,107,157,0.12)', text:'rgba(255,160,200,0.6)' },
-  { dot:'#f0d4ff', glow:'rgba(210,160,255,0.5)', glowOuter:'rgba(190,120,255,0.1)', text:'rgba(220,180,255,0.55)' },
-  { dot:'#d4e0ff', glow:'rgba(170,195,255,0.45)', glowOuter:'rgba(130,160,255,0.1)', text:'rgba(190,210,255,0.55)' },
-  { dot:'#fff5d4', glow:'rgba(255,230,170,0.45)', glowOuter:'rgba(255,210,120,0.1)', text:'rgba(255,235,185,0.55)' },
-  { dot:'#ffe0cc', glow:'rgba(255,200,160,0.45)', glowOuter:'rgba(255,180,130,0.1)', text:'rgba(255,210,175,0.55)' },
-  { dot:'#ffffff', glow:'rgba(255,255,255,0.5)', glowOuter:'rgba(255,255,255,0.1)', text:'rgba(255,255,255,0.55)' },
-  { dot:'#ffe8f0', glow:'rgba(255,200,220,0.4)', glowOuter:'rgba(232,160,181,0.1)', text:'rgba(255,210,225,0.5)' },
+  { fill:'#D4A574', glow:'rgba(212,165,116,0.6)', glowOuter:'rgba(212,165,116,0.18)', text:'rgba(180,145,100,0.65)' },
+  { fill:'#E8C9A0', glow:'rgba(232,201,160,0.55)', glowOuter:'rgba(232,201,160,0.15)', text:'rgba(195,165,120,0.6)' },
+  { fill:'#C8956E', glow:'rgba(200,149,110,0.6)', glowOuter:'rgba(200,149,110,0.18)', text:'rgba(170,130,90,0.65)' },
+  { fill:'#F0DFC0', glow:'rgba(240,223,192,0.5)', glowOuter:'rgba(240,223,192,0.12)', text:'rgba(200,180,140,0.6)' },
+  { fill:'#F5E6D0', glow:'rgba(245,230,208,0.5)', glowOuter:'rgba(245,230,208,0.1)', text:'rgba(210,185,145,0.55)' },
+  { fill:'#FFD700', glow:'rgba(255,215,0,0.4)', glowOuter:'rgba(255,215,0,0.1)', text:'rgba(200,170,100,0.6)' },
+  { fill:'#FFE4B5', glow:'rgba(255,228,181,0.45)', glowOuter:'rgba(255,228,181,0.1)', text:'rgba(195,170,130,0.55)' },
+  { fill:'#DAA520', glow:'rgba(218,165,32,0.45)', glowOuter:'rgba(218,165,32,0.1)', text:'rgba(185,145,70,0.6)' },
+  { fill:'#F5DEB3', glow:'rgba(245,222,179,0.45)', glowOuter:'rgba(245,222,179,0.1)', text:'rgba(200,175,130,0.55)' },
+  { fill:'#CD853F', glow:'rgba(205,133,63,0.5)', glowOuter:'rgba(205,133,63,0.12)', text:'rgba(175,125,70,0.6)' },
 ];
 
 // ===== 我爱你星星系统 =====
@@ -632,23 +637,22 @@ function getNextLangIndex() {
 function createLoveStar() {
   if (activeStars.length >= MAX_VISIBLE) {
     const oldest = activeStars.shift();
-    oldest.el.style.transition = 'opacity 2s ease';
+    oldest.el.style.transition = 'opacity 2.5s ease';
     oldest.el.style.opacity = '0';
-    setTimeout(() => oldest.el.remove(), 2200);
+    setTimeout(() => oldest.el.remove(), 2700);
     starQueue.push(oldest.langIdx);
   }
   const langIdx = getNextLangIndex();
   const item = loveInLanguages[langIdx];
   const pos = gridPositions[langIdx % gridPositions.length];
   const palette = starPalettes[langIdx % starPalettes.length];
-  const dotSize = 2.5 + Math.random()*3, textSize = 9 + Math.random()*2.5;
+  const dotSize = 8 + Math.random()*10, textSize = 9 + Math.random()*2.5;
   const pulseDur = 2.5 + Math.random()*2.5, appearDur = 3.5 + Math.random()*2;
 
   const el = document.createElement('div');
   el.className = 'love-star';
   el.style.left = pos.x + '%'; el.style.top = pos.y + '%';
   el.style.setProperty('--dot-size', dotSize+'px');
-  el.style.setProperty('--dot-color', palette.dot);
   el.style.setProperty('--dot-glow', palette.glow);
   el.style.setProperty('--dot-glow-outer', palette.glowOuter);
   el.style.setProperty('--text-size', textSize+'px');
@@ -657,7 +661,23 @@ function createLoveStar() {
   el.style.setProperty('--pulse-dur', pulseDur+'s');
   el.style.setProperty('--appear-dur', appearDur+'s');
 
+  // 创建尖锐星光SVG — 4角星光，优雅且高级
   const dot = document.createElement('div'); dot.className = 'star-dot';
+  const starId = 'star'+Math.random().toString(36).substr(2,6);
+  dot.innerHTML = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">'+
+    '<defs><radialGradient id="'+starId+'" cx="50%" cy="50%" r="50%">'+
+    '<stop offset="0%" stop-color="'+palette.fill+'" stop-opacity="1"/>'+
+    '<stop offset="40%" stop-color="'+palette.fill+'" stop-opacity="0.7"/>'+
+    '<stop offset="100%" stop-color="'+palette.fill+'" stop-opacity="0"/>'+
+    '</radialGradient></defs>'+
+    // 外层柔和光晕
+    '<circle cx="12" cy="12" r="11" fill="url(#'+starId+')" opacity="0.3"/>'+
+    // 4角星光 — 尖锐优雅
+    '<path d="M12 2 L13.2 10.5 L22 12 L13.2 13.5 L12 22 L10.8 13.5 L2 12 L10.8 10.5 Z" fill="'+palette.fill+'" opacity="0.9"/>'+
+    // 中心亮点
+    '<circle cx="12" cy="12" r="1.5" fill="#FFF8F0" opacity="0.95"/>'+
+    '</svg>';
+
   const text = document.createElement('div'); text.className = 'star-text';
   text.textContent = item.phrase; text.title = item.lang + ': ' + item.phrase;
   el.appendChild(dot); el.appendChild(text);
@@ -666,10 +686,10 @@ function createLoveStar() {
   const starData = { el, langIdx };
   activeStars.push(starData);
 
-  const aliveTime = 16000 + Math.random()*12000;
+  const aliveTime = 18000 + Math.random()*14000;
   setTimeout(() => {
-    el.style.transition = 'opacity 2.5s ease'; el.style.opacity = '0';
-    setTimeout(() => { el.remove(); activeStars = activeStars.filter(s => s !== starData); starQueue.push(langIdx); }, 2600);
+    el.style.transition = 'opacity 3s ease'; el.style.opacity = '0';
+    setTimeout(() => { el.remove(); activeStars = activeStars.filter(s => s !== starData); starQueue.push(langIdx); }, 3100);
   }, aliveTime);
 }
 
