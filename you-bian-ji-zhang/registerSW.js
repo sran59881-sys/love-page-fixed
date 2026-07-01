@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/love-page-fixed/you-bian-ji-zhang/sw.js', { scope: '/love-page-fixed/you-bian-ji-zhang/' })})}
